@@ -10,12 +10,12 @@ import (
 
 // GetOrder - Returns a specifc order
 func (c *Client) GetOrder(orderID string) (*Order, error) {
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/orders/%s", c.HostURL, orderID), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/orders/%s", c.ProductUrl, orderID), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	body, err := c.doRequest(req)
+	body, err := c.doGetRequest(req)
 	if err != nil {
 		return nil, err
 	}
@@ -36,12 +36,12 @@ func (c *Client) CreateOrder(orderItems []OrderItem) (*Order, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/orders", c.HostURL), strings.NewReader(string(rb)))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/orders", c.ProductUrl), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, err
 	}
 
-	body, err := c.doRequest(req)
+	body, err := c.doGetRequest(req)
 	if err != nil {
 		return nil, err
 	}
@@ -62,12 +62,12 @@ func (c *Client) UpdateOrder(orderID string, orderItems []OrderItem) (*Order, er
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/orders/%s", c.HostURL, orderID), strings.NewReader(string(rb)))
+	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/orders/%s", c.ProductUrl, orderID), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, err
 	}
 
-	body, err := c.doRequest(req)
+	body, err := c.doGetRequest(req)
 	if err != nil {
 		return nil, err
 	}
@@ -83,12 +83,12 @@ func (c *Client) UpdateOrder(orderID string, orderItems []OrderItem) (*Order, er
 
 // DeleteOrder - Deletes an order
 func (c *Client) DeleteOrder(orderID string) error {
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/orders/%s", c.HostURL, orderID), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/orders/%s", c.ProductUrl, orderID), nil)
 	if err != nil {
 		return err
 	}
 
-	body, err := c.doRequest(req)
+	body, err := c.doGetRequest(req)
 	if err != nil {
 		return err
 	}

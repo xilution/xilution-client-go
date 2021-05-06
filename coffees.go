@@ -9,12 +9,12 @@ import (
 
 // GetCoffees - Returns list of coffees (no auth required)
 func (c *Client) GetCoffees() ([]Coffee, error) {
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/coffees", c.HostURL), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/coffees", c.ProductUrl), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	body, err := c.doRequest(req)
+	body, err := c.doGetRequest(req)
 	if err != nil {
 		return nil, err
 	}
@@ -30,12 +30,12 @@ func (c *Client) GetCoffees() ([]Coffee, error) {
 
 // GetCoffeeIngredients - Returns list of coffee ingredients (no auth required)
 func (c *Client) GetCoffeeIngredients(coffeeID string) ([]Ingredient, error) {
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/coffees/%s/ingredients", c.HostURL, coffeeID), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/coffees/%s/ingredients", c.ProductUrl, coffeeID), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	body, err := c.doRequest(req)
+	body, err := c.doGetRequest(req)
 	if err != nil {
 		return nil, err
 	}
@@ -56,12 +56,12 @@ func (c *Client) CreateCoffee(coffee Coffee) (*Coffee, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/coffees", c.HostURL), strings.NewReader(string(rb)))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/coffees", c.ProductUrl), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, err
 	}
 
-	body, err := c.doRequest(req)
+	body, err := c.doGetRequest(req)
 	if err != nil {
 		return nil, err
 	}
@@ -93,12 +93,12 @@ func (c *Client) CreateCoffeeIngredient(coffee Coffee, ingredient Ingredient) (*
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/coffees/%d/ingredients", c.HostURL, coffee.ID), strings.NewReader(string(rb)))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/coffees/%d/ingredients", c.ProductUrl, coffee.ID), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, err
 	}
 
-	body, err := c.doRequest(req)
+	body, err := c.doGetRequest(req)
 	if err != nil {
 		return nil, err
 	}

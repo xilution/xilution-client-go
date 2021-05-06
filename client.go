@@ -1,5 +1,7 @@
 package xilution
 
+//go:generate mockgen -source=$GOFILE -destination=client_mock.go -package=xilution
+
 import (
 	"encoding/json"
 	"fmt"
@@ -9,13 +11,30 @@ import (
 	"time"
 )
 
-// HostURL - Default Xilution URL
-const HostURL string = "http://localhost:19090"
+type ProductUrl string
+
+const (
+	Elephant ProductUrl = "https://elephant.basics.api.xilution.com"
+	Zebra    ProductUrl = "https://zebra.basics.api.xilution.com"
+)
+
+// HTTPClient interface
+type SomeHTTPClient interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
+var (
+	SomeClient SomeHTTPClient
+)
+
+func init() {
+	SomeClient = &http.Client{Timeout: 10 * time.Second}
+}
 
 // Client -
 type Client struct {
-	HostURL    string
-	HTTPClient *http.Client
+	ProductUrl ProductUrl
+	HTTPClient SomeHTTPClient
 	Token      string
 }
 
@@ -32,42 +51,45 @@ type AuthResponse struct {
 	Token    string `json:"token"`
 }
 
+type ErrorResponse struct {
+	Message string `json:"message"`
+}
+
 // NewClient -
-func NewClient(host, username, password *string) (*Client, error) {
+func NewClient(host ProductUrl, organizationId, username, password *string) (*Client, error) {
 	c := Client{
-		HTTPClient: &http.Client{Timeout: 10 * time.Second},
-		// Default Xilution URL
-		HostURL: HostURL,
+		HTTPClient: SomeClient,
+		ProductUrl: host,
 	}
 
-	if host != nil {
-		c.HostURL = *host
-	}
-
-	if (username != nil) && (password != nil) {
+	if organizationId != nil && username != nil && password != nil {
 		// form request body
-		rb, err := json.Marshal(AuthStruct{
+		// TODO - fix this
+		rb, _ := json.Marshal(AuthStruct{
 			Username: *username,
 			Password: *password,
 		})
-		if err != nil {
-			return nil, err
-		}
 
 		// authenticate
-		req, err := http.NewRequest("POST", fmt.Sprintf("%s/signin", c.HostURL), strings.NewReader(string(rb)))
+		req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/oauth/token", *organizationId, Zebra), strings.NewReader(string(rb)))
+
+		res, err := c.HTTPClient.Do(req)
 		if err != nil {
 			return nil, err
 		}
+		defer res.Body.Close()
 
-		body, err := c.doRequest(req)
+		body, _ := ioutil.ReadAll(res.Body)
+
+		if res.StatusCode != http.StatusOK {
+			er := ErrorResponse{}
+			json.Unmarshal(body, &er)
+			return nil, fmt.Errorf(er.Message)
+		}
 
 		// parse response body
 		ar := AuthResponse{}
-		err = json.Unmarshal(body, &ar)
-		if err != nil {
-			return nil, err
-		}
+		json.Unmarshal(body, &ar)
 
 		c.Token = ar.Token
 	}
@@ -75,7 +97,7 @@ func NewClient(host, username, password *string) (*Client, error) {
 	return &c, nil
 }
 
-func (c *Client) doRequest(req *http.Request) ([]byte, error) {
+func (c *Client) doGetRequest(req *http.Request) ([]byte, error) {
 	req.Header.Set("Authorization", c.Token)
 
 	res, err := c.HTTPClient.Do(req)
@@ -84,13 +106,12 @@ func (c *Client) doRequest(req *http.Request) ([]byte, error) {
 	}
 	defer res.Body.Close()
 
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
+	body, _ := ioutil.ReadAll(res.Body)
 
 	if res.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("status: %d, body: %s", res.StatusCode, body)
+		er := ErrorResponse{}
+		json.Unmarshal(body, &er)
+		return nil, fmt.Errorf(er.Message)
 	}
 
 	return body, err
