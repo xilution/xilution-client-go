@@ -6,11 +6,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strings"
 	"testing"
 
 	"github.com/brianvoe/gofakeit/v6"
-	"github.com/dgrijalva/jwt-go"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
@@ -23,23 +21,10 @@ var (
 )
 
 func init() {
-	clientId = buildThingId()
-	organizationId = buildThingId()
+	clientId = buildTestId()
+	organizationId = buildTestId()
 	username = gofakeit.Username()
 	password = gofakeit.Password(true, true, true, true, false, 8)
-}
-
-func buildThingId() string {
-	return strings.Join(strings.Split(gofakeit.UUID(), "-"), "")
-}
-
-func buildJwtToken() string {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"foo": "bar",
-	})
-	tokenString, _ := token.SignedString([]byte("AllYourBase"))
-
-	return tokenString
 }
 
 func Test__NewClient__Happy_Path(t *testing.T) {
@@ -47,8 +32,8 @@ func Test__NewClient__Happy_Path(t *testing.T) {
 
 	defer ctrl.Finish()
 
-	m := NewMockSomeHTTPClient(ctrl)
-	SomeClient = m
+	m := NewMockIHttpClient(ctrl)
+	IHttpClientImpl = m
 
 	token := buildJwtToken()
 	json := fmt.Sprintf(`{"access_token": "%s"}`, token)
@@ -89,8 +74,8 @@ func Test__NewClient__When_Auth_Request_Returns_Error(t *testing.T) {
 
 	defer ctrl.Finish()
 
-	m := NewMockSomeHTTPClient(ctrl)
-	SomeClient = m
+	m := NewMockIHttpClient(ctrl)
+	IHttpClientImpl = m
 
 	errMsg := gofakeit.Sentence(5)
 	m.EXPECT().Do(gomock.Any()).Return(nil, errors.New(errMsg))
@@ -107,8 +92,8 @@ func Test__NewClient__When_Auth_Response_Code_Is_Not_OK(t *testing.T) {
 
 	defer ctrl.Finish()
 
-	m := NewMockSomeHTTPClient(ctrl)
-	SomeClient = m
+	m := NewMockIHttpClient(ctrl)
+	IHttpClientImpl = m
 
 	errMsg := gofakeit.Sentence(10)
 	json := fmt.Sprintf(`{"message": "%s"}`, errMsg)
@@ -130,8 +115,8 @@ func Test__doGetRequest__Happy_Path(t *testing.T) {
 
 	defer ctrl.Finish()
 
-	m := NewMockSomeHTTPClient(ctrl)
-	SomeClient = m
+	m := NewMockIHttpClient(ctrl)
+	IHttpClientImpl = m
 
 	token := buildJwtToken()
 	json1 := fmt.Sprintf(`{"access_token": "%s"}`, token)
@@ -163,8 +148,8 @@ func Test__doGetRequest__When_Auth_Request_Returns_Error(t *testing.T) {
 
 	defer ctrl.Finish()
 
-	m := NewMockSomeHTTPClient(ctrl)
-	SomeClient = m
+	m := NewMockIHttpClient(ctrl)
+	IHttpClientImpl = m
 
 	token := buildJwtToken()
 	json1 := fmt.Sprintf(`{"access_token": "%s"}`, token)
@@ -192,8 +177,8 @@ func Test__doGetRequest__When_Response_Code_Is_Not_OK(t *testing.T) {
 
 	defer ctrl.Finish()
 
-	m := NewMockSomeHTTPClient(ctrl)
-	SomeClient = m
+	m := NewMockIHttpClient(ctrl)
+	IHttpClientImpl = m
 
 	token := buildJwtToken()
 	json1 := fmt.Sprintf(`{"access_token": "%s"}`, token)
@@ -226,8 +211,8 @@ func Test__doCreateRequest__Happy_Path(t *testing.T) {
 
 	defer ctrl.Finish()
 
-	m := NewMockSomeHTTPClient(ctrl)
-	SomeClient = m
+	m := NewMockIHttpClient(ctrl)
+	IHttpClientImpl = m
 
 	token := buildJwtToken()
 	json1 := fmt.Sprintf(`{"access_token": "%s"}`, token)
@@ -260,8 +245,8 @@ func Test__doCreateRequest__When_Auth_Request_Returns_Error(t *testing.T) {
 
 	defer ctrl.Finish()
 
-	m := NewMockSomeHTTPClient(ctrl)
-	SomeClient = m
+	m := NewMockIHttpClient(ctrl)
+	IHttpClientImpl = m
 
 	token := buildJwtToken()
 	json1 := fmt.Sprintf(`{"access_token": "%s"}`, token)
@@ -289,8 +274,8 @@ func Test__doCreateRequest__When_Response_Code_Is_Not_Created(t *testing.T) {
 
 	defer ctrl.Finish()
 
-	m := NewMockSomeHTTPClient(ctrl)
-	SomeClient = m
+	m := NewMockIHttpClient(ctrl)
+	IHttpClientImpl = m
 
 	token := buildJwtToken()
 	json1 := fmt.Sprintf(`{"access_token": "%s"}`, token)
@@ -323,8 +308,8 @@ func Test__doNoContentRequest__Happy_Path(t *testing.T) {
 
 	defer ctrl.Finish()
 
-	m := NewMockSomeHTTPClient(ctrl)
-	SomeClient = m
+	m := NewMockIHttpClient(ctrl)
+	IHttpClientImpl = m
 
 	token := buildJwtToken()
 	json1 := fmt.Sprintf(`{"access_token": "%s"}`, token)
@@ -354,8 +339,8 @@ func Test__doNoContentRequest__When_Auth_Request_Returns_Error(t *testing.T) {
 
 	defer ctrl.Finish()
 
-	m := NewMockSomeHTTPClient(ctrl)
-	SomeClient = m
+	m := NewMockIHttpClient(ctrl)
+	IHttpClientImpl = m
 
 	token := buildJwtToken()
 	json1 := fmt.Sprintf(`{"access_token": "%s"}`, token)
@@ -383,8 +368,8 @@ func Test__doNoContentRequest__When_Response_Code_Is_Not_Created(t *testing.T) {
 
 	defer ctrl.Finish()
 
-	m := NewMockSomeHTTPClient(ctrl)
-	SomeClient = m
+	m := NewMockIHttpClient(ctrl)
+	IHttpClientImpl = m
 
 	token := buildJwtToken()
 	json1 := fmt.Sprintf(`{"access_token": "%s"}`, token)

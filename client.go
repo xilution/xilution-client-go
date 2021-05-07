@@ -21,23 +21,25 @@ const (
 )
 
 // HTTPClient interface
-type SomeHTTPClient interface {
+type IHttpClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
 var (
-	SomeClient SomeHTTPClient
+	IHttpClientImpl IHttpClient
 )
 
 func init() {
-	SomeClient = &http.Client{Timeout: 10 * time.Second}
+	IHttpClientImpl = &http.Client{Timeout: 10 * time.Second}
 }
 
 // Client -
 type Client struct {
-	ProductUrl ProductUrl
-	HTTPClient SomeHTTPClient
-	Token      string
+	ProductUrl     ProductUrl
+	ClientId       *string
+	OrganizationId *string
+	HttpClient     IHttpClient
+	Token          string
 }
 
 // AuthResponse -
@@ -52,8 +54,10 @@ type ErrorResponse struct {
 // NewClient -
 func NewClient(host ProductUrl, clientId, organizationId, username, password *string) (*Client, error) {
 	c := Client{
-		HTTPClient: SomeClient,
-		ProductUrl: host,
+		HttpClient:     IHttpClientImpl,
+		ProductUrl:     host,
+		ClientId:       clientId,
+		OrganizationId: organizationId,
 	}
 
 	if organizationId != nil && username != nil && password != nil {
@@ -70,7 +74,7 @@ func NewClient(host ProductUrl, clientId, organizationId, username, password *st
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 		req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
 
-		res, err := c.HTTPClient.Do(req)
+		res, err := c.HttpClient.Do(req)
 		if err != nil {
 			return nil, err
 		}
@@ -102,7 +106,7 @@ func (c *Client) doGetRequest(req *http.Request) ([]byte, error) {
 	req.Header.Set("Authorization", c.Token)
 	req.Header.Add("Content-Type", "application/json")
 
-	res, err := c.HTTPClient.Do(req)
+	res, err := c.HttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -121,7 +125,7 @@ func (c *Client) doCreateRequest(req *http.Request) (*string, error) {
 	req.Header.Set("Authorization", c.Token)
 	req.Header.Add("Content-Type", "application/json")
 
-	res, err := c.HTTPClient.Do(req)
+	res, err := c.HttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -141,7 +145,7 @@ func (c *Client) doNoContentRequest(req *http.Request) (*string, error) {
 	req.Header.Set("Authorization", c.Token)
 	req.Header.Add("Content-Type", "application/json")
 
-	res, err := c.HTTPClient.Do(req)
+	res, err := c.HttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}

@@ -78,7 +78,7 @@ func (c *Client) CreateCoffee(coffee Coffee) (*Coffee, error) {
 // CreateCoffeeIngredient - Create new coffee ingredient
 func (c *Client) CreateCoffeeIngredient(coffee Coffee, ingredient Ingredient) (*Ingredient, error) {
 	reqBody := struct {
-		CoffeeID     int    `json:"coffee_id"`
+		CoffeeID     string `json:"coffee_id"`
 		IngredientID int    `json:"ingredient_id"`
 		Quantity     int    `json:"quantity"`
 		Unit         string `json:"unit"`
@@ -93,7 +93,7 @@ func (c *Client) CreateCoffeeIngredient(coffee Coffee, ingredient Ingredient) (*
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/coffees/%d/ingredients", c.ProductUrl, coffee.ID), strings.NewReader(string(rb)))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/coffees/%s/ingredients", c.ProductUrl, coffee.ID), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, err
 	}
