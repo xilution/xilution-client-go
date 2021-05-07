@@ -24,3 +24,8 @@ type Ingredient struct {
 	Quantity int    `json:"quantity"`
 	Unit     string `json:"unit"`
 }
+
+// Organization -
+type Organization struct {
+	ID string `json:"id"`
+}

@@ -328,10 +328,9 @@ func Test__doNoContentRequest__Happy_Path(t *testing.T) {
 
 	req, _ := http.NewRequest("PUT", gofakeit.URL(), nil)
 
-	resp, err := c.doNoContentRequest(req)
+	err := c.doNoContentRequest(req)
 
 	assert.Nil(t, err)
-	assert.Nil(t, resp)
 }
 
 func Test__doNoContentRequest__When_Auth_Request_Returns_Error(t *testing.T) {
@@ -356,9 +355,8 @@ func Test__doNoContentRequest__When_Auth_Request_Returns_Error(t *testing.T) {
 
 	req, _ := http.NewRequest("PUT", gofakeit.URL(), nil)
 
-	resp, err := c.doNoContentRequest(req)
+	err := c.doNoContentRequest(req)
 
-	assert.Nil(t, resp)
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
 }
@@ -390,9 +388,8 @@ func Test__doNoContentRequest__When_Response_Code_Is_Not_Created(t *testing.T) {
 
 	req, _ := http.NewRequest("PUT", gofakeit.URL(), nil)
 
-	resp, err := c.doNoContentRequest(req)
+	err := c.doNoContentRequest(req)
 
-	assert.Nil(t, resp)
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
 }

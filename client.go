@@ -141,20 +141,20 @@ func (c *Client) doCreateRequest(req *http.Request) (*string, error) {
 	return &location, err
 }
 
-func (c *Client) doNoContentRequest(req *http.Request) (*string, error) {
+func (c *Client) doNoContentRequest(req *http.Request) error {
 	req.Header.Set("Authorization", c.Token)
 	req.Header.Add("Content-Type", "application/json")
 
 	res, err := c.HttpClient.Do(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if res.StatusCode != http.StatusNoContent {
 		defer res.Body.Close()
 		body, _ := ioutil.ReadAll(res.Body)
-		return nil, handleErrorResponse(body)
+		return handleErrorResponse(body)
 	}
 
-	return nil, err
+	return nil
 }
