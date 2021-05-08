@@ -67,7 +67,9 @@ func NewXilutionClient(clientId, organizationId, username, password *string) (*X
 		data.Set("username", *username)
 		data.Set("password", *password)
 		data.Set("client_id", *clientId)
-		data.Set("scope", "read")
+		data.Set("scope", "read write")
+
+		println(data.Encode())
 
 		// authenticate
 		req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/oauth/token", ZebraBaseUrl, *organizationId), strings.NewReader(data.Encode()))
