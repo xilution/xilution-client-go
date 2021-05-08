@@ -50,6 +50,22 @@ func Test__NewClient__Happy_Path(t *testing.T) {
 	assert.EqualValues(t, token, resp.Token)
 }
 
+func Test__NewClient__When_ClientId_Is_Nil(t *testing.T) {
+	resp, err := NewXilutionClient(nil, &organizationId, &username, &password)
+
+	assert.NotNil(t, resp)
+	assert.Nil(t, err)
+	assert.EqualValues(t, "", resp.Token)
+}
+
+func Test__NewClient__When_OrganizationId_Is_Nil(t *testing.T) {
+	resp, err := NewXilutionClient(&clientId, nil, &username, &password)
+
+	assert.NotNil(t, resp)
+	assert.Nil(t, err)
+	assert.EqualValues(t, "", resp.Token)
+}
+
 func Test__NewClient__When_Username_Is_Nil(t *testing.T) {
 	resp, err := NewXilutionClient(&clientId, &organizationId, nil, &password)
 

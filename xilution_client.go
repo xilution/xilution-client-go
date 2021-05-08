@@ -54,7 +54,7 @@ type ErrorResponse struct {
 
 // NewXilutionClient -
 func NewXilutionClient(clientId, organizationId, username, password *string) (*XilutionClient, error) {
-	c := XilutionClient{
+	xc := XilutionClient{
 		HttpClient:     IHttpClientImpl,
 		ClientId:       clientId,
 		OrganizationId: organizationId,
@@ -74,7 +74,7 @@ func NewXilutionClient(clientId, organizationId, username, password *string) (*X
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 		req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
 
-		res, err := c.HttpClient.Do(req)
+		res, err := xc.HttpClient.Do(req)
 		if err != nil {
 			return nil, err
 		}
@@ -90,10 +90,10 @@ func NewXilutionClient(clientId, organizationId, username, password *string) (*X
 		ar := AuthResponse{}
 		json.Unmarshal(body, &ar)
 
-		c.Token = ar.Token
+		xc.Token = ar.Token
 	}
 
-	return &c, nil
+	return &xc, nil
 }
 
 func handleErrorResponse(body []byte) error {
