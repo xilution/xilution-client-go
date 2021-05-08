@@ -20,10 +20,10 @@ func (xc *XilutionClient) CreateClient(client Client) (*string, error) {
 	return location, nil
 }
 
-func (c *XilutionClient) GetClient(clientId string) (*Client, error) {
+func (xc *XilutionClient) GetClient(clientId string) (*Client, error) {
 	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/clients/%s", ElephantBaseUrl, clientId), nil)
 
-	body, err := c.doGetRequest(req)
+	body, err := xc.doGetRequest(req)
 	if err != nil {
 		return nil, err
 	}

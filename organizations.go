@@ -20,10 +20,10 @@ func (xc *XilutionClient) CreateOrganization(organization Organization) (*string
 	return location, nil
 }
 
-func (c *XilutionClient) GetOrganization(organizationId string) (*Organization, error) {
+func (xc *XilutionClient) GetOrganization(organizationId string) (*Organization, error) {
 	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s", ElephantBaseUrl, organizationId), nil)
 
-	body, err := c.doGetRequest(req)
+	body, err := xc.doGetRequest(req)
 	if err != nil {
 		return nil, err
 	}
@@ -85,10 +85,10 @@ func (xc *XilutionClient) CreateSubOrganization(organizationId string, subOrgani
 	return location, nil
 }
 
-func (c *XilutionClient) GetSubOrganization(organizationId string, subOrganizationId string) (*Organization, error) {
+func (xc *XilutionClient) GetSubOrganization(organizationId string, subOrganizationId string) (*Organization, error) {
 	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/sub-organizations/%s", ElephantBaseUrl, organizationId, subOrganizationId), nil)
 
-	body, err := c.doGetRequest(req)
+	body, err := xc.doGetRequest(req)
 	if err != nil {
 		return nil, err
 	}
