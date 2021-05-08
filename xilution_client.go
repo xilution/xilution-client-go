@@ -1,6 +1,6 @@
 package xilution
 
-//go:generate mockgen -source=$GOFILE -destination=client_mock.go -package=xilution
+//go:generate mockgen -source=$GOFILE -destination=xilution_client_mock.go -package=xilution
 
 import (
 	"encoding/json"
@@ -16,8 +16,10 @@ import (
 type ProductUrl string
 
 const (
-	Elephant ProductUrl = "https://elephant.basics.api.xilution.com"
-	Zebra    ProductUrl = "https://zebra.basics.api.xilution.com"
+	ElephantBaseUrl ProductUrl = "https://elephant.basics.api.xilution.com"
+	RhinoBaseUrl    ProductUrl = "https://rhino.basics.api.xilution.com"
+	HippoBaseUrl    ProductUrl = "https://hippo.basics.api.xilution.com"
+	ZebraBaseUrl    ProductUrl = "https://zebra.basics.api.xilution.com"
 )
 
 // HTTPClient interface
@@ -33,9 +35,8 @@ func init() {
 	IHttpClientImpl = &http.Client{Timeout: 10 * time.Second}
 }
 
-// Client -
-type Client struct {
-	ProductUrl     ProductUrl
+// XilutionClient -
+type XilutionClient struct {
 	ClientId       *string
 	OrganizationId *string
 	HttpClient     IHttpClient
@@ -51,16 +52,15 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
-// NewClient -
-func NewClient(host ProductUrl, clientId, organizationId, username, password *string) (*Client, error) {
-	c := Client{
+// NewXilutionClient -
+func NewXilutionClient(clientId, organizationId, username, password *string) (*XilutionClient, error) {
+	c := XilutionClient{
 		HttpClient:     IHttpClientImpl,
-		ProductUrl:     host,
 		ClientId:       clientId,
 		OrganizationId: organizationId,
 	}
 
-	if organizationId != nil && username != nil && password != nil {
+	if clientId != nil && organizationId != nil && username != nil && password != nil {
 		// form request body
 		data := url.Values{}
 		data.Set("grant_type", "password")
@@ -70,7 +70,7 @@ func NewClient(host ProductUrl, clientId, organizationId, username, password *st
 		data.Set("scope", "read write")
 
 		// authenticate
-		req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/oauth/token", *organizationId, Zebra), strings.NewReader(data.Encode()))
+		req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/oauth/token", *organizationId, ZebraBaseUrl), strings.NewReader(data.Encode()))
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 		req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
 
@@ -102,11 +102,11 @@ func handleErrorResponse(body []byte) error {
 	return fmt.Errorf(er.Message)
 }
 
-func (c *Client) doGetRequest(req *http.Request) ([]byte, error) {
-	req.Header.Set("Authorization", c.Token)
+func (xc *XilutionClient) doGetRequest(req *http.Request) ([]byte, error) {
+	req.Header.Set("Authorization", xc.Token)
 	req.Header.Add("Content-Type", "application/json")
 
-	res, err := c.HttpClient.Do(req)
+	res, err := xc.HttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -121,11 +121,11 @@ func (c *Client) doGetRequest(req *http.Request) ([]byte, error) {
 	return body, err
 }
 
-func (c *Client) doCreateRequest(req *http.Request) (*string, error) {
-	req.Header.Set("Authorization", c.Token)
+func (xc *XilutionClient) doCreateRequest(req *http.Request) (*string, error) {
+	req.Header.Set("Authorization", xc.Token)
 	req.Header.Add("Content-Type", "application/json")
 
-	res, err := c.HttpClient.Do(req)
+	res, err := xc.HttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -141,11 +141,11 @@ func (c *Client) doCreateRequest(req *http.Request) (*string, error) {
 	return &location, err
 }
 
-func (c *Client) doNoContentRequest(req *http.Request) error {
-	req.Header.Set("Authorization", c.Token)
+func (xc *XilutionClient) doNoContentRequest(req *http.Request) error {
+	req.Header.Set("Authorization", xc.Token)
 	req.Header.Add("Content-Type", "application/json")
 
-	res, err := c.HttpClient.Do(req)
+	res, err := xc.HttpClient.Do(req)
 	if err != nil {
 		return err
 	}

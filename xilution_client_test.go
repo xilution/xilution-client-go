@@ -43,29 +43,26 @@ func Test__NewClient__Happy_Path(t *testing.T) {
 		Body:       r,
 	}, nil)
 
-	resp, err := NewClient(Elephant, &clientId, &organizationId, &username, &password)
+	resp, err := NewXilutionClient(&clientId, &organizationId, &username, &password)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
-	assert.EqualValues(t, Elephant, resp.ProductUrl)
 	assert.EqualValues(t, token, resp.Token)
 }
 
 func Test__NewClient__When_Username_Is_Nil(t *testing.T) {
-	resp, err := NewClient(Elephant, &clientId, &organizationId, nil, &password)
+	resp, err := NewXilutionClient(&clientId, &organizationId, nil, &password)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
-	assert.EqualValues(t, Elephant, resp.ProductUrl)
 	assert.EqualValues(t, "", resp.Token)
 }
 
 func Test__NewClient__When_Password_Is_Nil(t *testing.T) {
-	resp, err := NewClient(Elephant, &clientId, &organizationId, &username, nil)
+	resp, err := NewXilutionClient(&clientId, &organizationId, &username, nil)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
-	assert.EqualValues(t, Elephant, resp.ProductUrl)
 	assert.EqualValues(t, "", resp.Token)
 }
 
@@ -80,7 +77,7 @@ func Test__NewClient__When_Auth_Request_Returns_Error(t *testing.T) {
 	errMsg := gofakeit.Sentence(5)
 	m.EXPECT().Do(gomock.Any()).Return(nil, errors.New(errMsg))
 
-	resp, err := NewClient(Elephant, &clientId, &organizationId, &username, &password)
+	resp, err := NewXilutionClient(&clientId, &organizationId, &username, &password)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -103,7 +100,7 @@ func Test__NewClient__When_Auth_Response_Code_Is_Not_OK(t *testing.T) {
 		Body:       r,
 	}, nil)
 
-	resp, err := NewClient(Elephant, &clientId, &organizationId, &username, &password)
+	resp, err := NewXilutionClient(&clientId, &organizationId, &username, &password)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -132,7 +129,7 @@ func Test__doGetRequest__Happy_Path(t *testing.T) {
 		Body:       r2,
 	}, nil).After(first)
 
-	c, _ := NewClient(Elephant, &clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
 
 	req, _ := http.NewRequest("GET", gofakeit.URL(), nil)
 
@@ -161,7 +158,7 @@ func Test__doGetRequest__When_Auth_Request_Returns_Error(t *testing.T) {
 	errMsg := gofakeit.Sentence(5)
 	m.EXPECT().Do(gomock.Any()).Return(nil, errors.New(errMsg)).After(first)
 
-	c, _ := NewClient(Elephant, &clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
 
 	req, _ := http.NewRequest("GET", gofakeit.URL(), nil)
 
@@ -183,11 +180,11 @@ func Test__doGetRequest__When_Response_Code_Is_Not_OK(t *testing.T) {
 	token := buildJwtToken()
 	json1 := fmt.Sprintf(`{"access_token": "%s"}`, token)
 	r1 := ioutil.NopCloser(bytes.NewReader([]byte(json1)))
-	errMsg := gofakeit.Sentence(10)
 	first := m.EXPECT().Do(gomock.Any()).Return(&http.Response{
 		StatusCode: http.StatusOK,
 		Body:       r1,
 	}, nil)
+	errMsg := gofakeit.Sentence(10)
 	json2 := fmt.Sprintf(`{"message": "%s"}`, errMsg)
 	r2 := ioutil.NopCloser(bytes.NewReader([]byte(json2)))
 	m.EXPECT().Do(gomock.Any()).Return(&http.Response{
@@ -195,7 +192,7 @@ func Test__doGetRequest__When_Response_Code_Is_Not_OK(t *testing.T) {
 		Body:       r2,
 	}, nil).After(first)
 
-	c, _ := NewClient(Elephant, &clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
 
 	req, _ := http.NewRequest("GET", gofakeit.URL(), nil)
 
@@ -229,7 +226,7 @@ func Test__doCreateRequest__Happy_Path(t *testing.T) {
 		Header:     map[string][]string{"Location": {location}},
 	}, nil).After(first)
 
-	c, _ := NewClient(Elephant, &clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
 
 	req, _ := http.NewRequest("POST", gofakeit.URL(), nil)
 
@@ -258,7 +255,7 @@ func Test__doCreateRequest__When_Auth_Request_Returns_Error(t *testing.T) {
 	errMsg := gofakeit.Sentence(5)
 	m.EXPECT().Do(gomock.Any()).Return(nil, errors.New(errMsg)).After(first)
 
-	c, _ := NewClient(Elephant, &clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
 
 	req, _ := http.NewRequest("POST", gofakeit.URL(), nil)
 
@@ -280,11 +277,11 @@ func Test__doCreateRequest__When_Response_Code_Is_Not_Created(t *testing.T) {
 	token := buildJwtToken()
 	json1 := fmt.Sprintf(`{"access_token": "%s"}`, token)
 	r1 := ioutil.NopCloser(bytes.NewReader([]byte(json1)))
-	errMsg := gofakeit.Sentence(10)
 	first := m.EXPECT().Do(gomock.Any()).Return(&http.Response{
 		StatusCode: http.StatusOK,
 		Body:       r1,
 	}, nil)
+	errMsg := gofakeit.Sentence(10)
 	json2 := fmt.Sprintf(`{"message": "%s"}`, errMsg)
 	r2 := ioutil.NopCloser(bytes.NewReader([]byte(json2)))
 	m.EXPECT().Do(gomock.Any()).Return(&http.Response{
@@ -292,7 +289,7 @@ func Test__doCreateRequest__When_Response_Code_Is_Not_Created(t *testing.T) {
 		Body:       r2,
 	}, nil).After(first)
 
-	c, _ := NewClient(Elephant, &clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
 
 	req, _ := http.NewRequest("POST", gofakeit.URL(), nil)
 
@@ -324,7 +321,7 @@ func Test__doNoContentRequest__Happy_Path(t *testing.T) {
 		Body:       r2,
 	}, nil).After(first)
 
-	c, _ := NewClient(Elephant, &clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
 
 	req, _ := http.NewRequest("PUT", gofakeit.URL(), nil)
 
@@ -351,7 +348,7 @@ func Test__doNoContentRequest__When_Auth_Request_Returns_Error(t *testing.T) {
 	errMsg := gofakeit.Sentence(5)
 	m.EXPECT().Do(gomock.Any()).Return(nil, errors.New(errMsg)).After(first)
 
-	c, _ := NewClient(Elephant, &clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
 
 	req, _ := http.NewRequest("PUT", gofakeit.URL(), nil)
 
@@ -372,11 +369,11 @@ func Test__doNoContentRequest__When_Response_Code_Is_Not_Created(t *testing.T) {
 	token := buildJwtToken()
 	json1 := fmt.Sprintf(`{"access_token": "%s"}`, token)
 	r1 := ioutil.NopCloser(bytes.NewReader([]byte(json1)))
-	errMsg := gofakeit.Sentence(10)
 	first := m.EXPECT().Do(gomock.Any()).Return(&http.Response{
 		StatusCode: http.StatusOK,
 		Body:       r1,
 	}, nil)
+	errMsg := gofakeit.Sentence(10)
 	json2 := fmt.Sprintf(`{"message": "%s"}`, errMsg)
 	r2 := ioutil.NopCloser(bytes.NewReader([]byte(json2)))
 	m.EXPECT().Do(gomock.Any()).Return(&http.Response{
@@ -384,7 +381,7 @@ func Test__doNoContentRequest__When_Response_Code_Is_Not_Created(t *testing.T) {
 		Body:       r2,
 	}, nil).After(first)
 
-	c, _ := NewClient(Elephant, &clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
 
 	req, _ := http.NewRequest("PUT", gofakeit.URL(), nil)
 

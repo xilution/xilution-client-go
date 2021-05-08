@@ -10,3 +10,6 @@ test_coverage:
 
 format:
 	go fmt ./...
+
+clean:
+	rm -rf *_mock.go coverage.out
