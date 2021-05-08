@@ -99,7 +99,7 @@ func handleErrorResponse(body []byte) error {
 }
 
 func (xc *XilutionClient) doGetRequest(req *http.Request) ([]byte, error) {
-	req.Header.Set("Authorization", xc.Token)
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", xc.Token))
 	req.Header.Add("Content-Type", "application/json")
 
 	res, err := xc.HttpClient.Do(req)
@@ -118,7 +118,7 @@ func (xc *XilutionClient) doGetRequest(req *http.Request) ([]byte, error) {
 }
 
 func (xc *XilutionClient) doCreateRequest(req *http.Request) (*string, error) {
-	req.Header.Set("Authorization", xc.Token)
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", xc.Token))
 	req.Header.Add("Content-Type", "application/json")
 
 	res, err := xc.HttpClient.Do(req)
@@ -138,7 +138,7 @@ func (xc *XilutionClient) doCreateRequest(req *http.Request) (*string, error) {
 }
 
 func (xc *XilutionClient) doNoContentRequest(req *http.Request) error {
-	req.Header.Set("Authorization", xc.Token)
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", xc.Token))
 	req.Header.Add("Content-Type", "application/json")
 
 	res, err := xc.HttpClient.Do(req)
