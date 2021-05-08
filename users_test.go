@@ -35,7 +35,7 @@ func Test__CreateUser__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateUser(user)
+	resp, err := xc.CreateUser(&user)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -64,7 +64,7 @@ func Test__CreateUser__When_doCreateRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateUser(user)
+	resp, err := xc.CreateUser(&user)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -92,7 +92,7 @@ func Test__GetUser__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetUser(user.ID)
+	resp, err := xc.GetUser(&user.ID)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -121,7 +121,7 @@ func Test__GetUser__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetUser(user.ID)
+	resp, err := xc.GetUser(&user.ID)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -170,7 +170,7 @@ func Test__GetUsers__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetUsers(pageSize, pageNumber)
+	resp, err := xc.GetUsers(&pageSize, &pageNumber)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -200,7 +200,7 @@ func Test__GetUsers__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetUsers(pageSize, pageNumber)
+	resp, err := xc.GetUsers(&pageSize, &pageNumber)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -227,7 +227,7 @@ func Test__UpdateUser__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateUser(user)
+	err := xc.UpdateUser(&user)
 
 	assert.Nil(t, err)
 }
@@ -254,7 +254,7 @@ func Test__UpdateUser__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateUser(user)
+	err := xc.UpdateUser(&user)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
@@ -280,7 +280,7 @@ func Test__DeleteUser__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteUser(userId)
+	err := xc.DeleteUser(&userId)
 
 	assert.Nil(t, err)
 }
@@ -307,7 +307,7 @@ func Test__DeleteUser__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteUser(userId)
+	err := xc.DeleteUser(&userId)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())

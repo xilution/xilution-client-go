@@ -35,7 +35,7 @@ func Test__CreateClient__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateClient(client)
+	resp, err := xc.CreateClient(&client)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -64,7 +64,7 @@ func Test__CreateClient__When_doCreateRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateClient(client)
+	resp, err := xc.CreateClient(&client)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -92,7 +92,7 @@ func Test__GetClient__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetClient(client.ID)
+	resp, err := xc.GetClient(&client.ID)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -121,7 +121,7 @@ func Test__GetClient__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetClient(client.ID)
+	resp, err := xc.GetClient(&client.ID)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -170,7 +170,7 @@ func Test__GetClients__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetClients(pageSize, pageNumber)
+	resp, err := xc.GetClients(&pageSize, &pageNumber)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -200,7 +200,7 @@ func Test__GetClients__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetClients(pageSize, pageNumber)
+	resp, err := xc.GetClients(&pageSize, &pageNumber)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -227,7 +227,7 @@ func Test__UpdateClient__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateClient(client)
+	err := xc.UpdateClient(&client)
 
 	assert.Nil(t, err)
 }
@@ -254,7 +254,7 @@ func Test__UpdateClient__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateClient(client)
+	err := xc.UpdateClient(&client)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
@@ -280,7 +280,7 @@ func Test__DeleteClient__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteClient(clientId)
+	err := xc.DeleteClient(&clientId)
 
 	assert.Nil(t, err)
 }
@@ -307,7 +307,7 @@ func Test__DeleteClient__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteClient(clientId)
+	err := xc.DeleteClient(&clientId)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())

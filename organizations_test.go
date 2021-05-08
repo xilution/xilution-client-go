@@ -35,7 +35,7 @@ func Test__CreateOrganization__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateOrganization(organization)
+	resp, err := xc.CreateOrganization(&organization)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -64,7 +64,7 @@ func Test__CreateOrganization__When_doCreateRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateOrganization(organization)
+	resp, err := xc.CreateOrganization(&organization)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -92,7 +92,7 @@ func Test__GetOrganization__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetOrganization(organization.ID)
+	resp, err := xc.GetOrganization(&organization.ID)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -121,7 +121,7 @@ func Test__GetOrganization__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetOrganization(organization.ID)
+	resp, err := xc.GetOrganization(&organization.ID)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -170,7 +170,7 @@ func Test__GetOrganizations__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetOrganizations(pageSize, pageNumber)
+	resp, err := xc.GetOrganizations(&pageSize, &pageNumber)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -200,7 +200,7 @@ func Test__GetOrganizations__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetOrganizations(pageSize, pageNumber)
+	resp, err := xc.GetOrganizations(&pageSize, &pageNumber)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -227,7 +227,7 @@ func Test__UpdateOrganization__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateOrganization(organization)
+	err := xc.UpdateOrganization(&organization)
 
 	assert.Nil(t, err)
 }
@@ -254,7 +254,7 @@ func Test__UpdateOrganization__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateOrganization(organization)
+	err := xc.UpdateOrganization(&organization)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
@@ -280,7 +280,7 @@ func Test__DeleteOrganization__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteOrganization(organizationId)
+	err := xc.DeleteOrganization(&organizationId)
 
 	assert.Nil(t, err)
 }
@@ -307,7 +307,7 @@ func Test__DeleteOrganization__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteOrganization(organizationId)
+	err := xc.DeleteOrganization(&organizationId)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
@@ -336,7 +336,7 @@ func Test__CreateSubOrganization__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateSubOrganization(organizationId, subOrganization)
+	resp, err := xc.CreateSubOrganization(&organizationId, &subOrganization)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -366,7 +366,7 @@ func Test__CreateSubOrganization__When_doCreateRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateSubOrganization(organizationId, subOrganization)
+	resp, err := xc.CreateSubOrganization(&organizationId, &subOrganization)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -395,7 +395,7 @@ func Test__GetSubOrganization__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetSubOrganization(organizationId, subOrganization.ID)
+	resp, err := xc.GetSubOrganization(&organizationId, &subOrganization.ID)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -425,7 +425,7 @@ func Test__GetSubOrganization__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetSubOrganization(organizationId, subOrganization.ID)
+	resp, err := xc.GetSubOrganization(&organizationId, &subOrganization.ID)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -475,7 +475,7 @@ func Test__GetSubOrganizations__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetSubOrganizations(organizationId, pageSize, pageNumber)
+	resp, err := xc.GetSubOrganizations(&organizationId, &pageSize, &pageNumber)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -506,7 +506,7 @@ func Test__GetSubOrganizations__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetSubOrganizations(organizationId, pageSize, pageNumber)
+	resp, err := xc.GetSubOrganizations(&organizationId, &pageSize, &pageNumber)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -534,7 +534,7 @@ func Test__UpdateSubOrganization__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateSubOrganization(organizationId, subOrganization)
+	err := xc.UpdateSubOrganization(&organizationId, &subOrganization)
 
 	assert.Nil(t, err)
 }
@@ -562,7 +562,7 @@ func Test__UpdateSubOrganization__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateSubOrganization(organizationId, subOrganization)
+	err := xc.UpdateSubOrganization(&organizationId, &subOrganization)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
@@ -589,7 +589,7 @@ func Test__DeleteSubOrganization__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteSubOrganization(organizationId, subOrganizationId)
+	err := xc.DeleteSubOrganization(&organizationId, &subOrganizationId)
 
 	assert.Nil(t, err)
 }
@@ -617,7 +617,7 @@ func Test__DeleteSubOrganization__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteSubOrganization(organizationId, subOrganizationId)
+	err := xc.DeleteSubOrganization(&organizationId, &subOrganizationId)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
