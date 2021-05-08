@@ -12,4 +12,4 @@ format:
 	go fmt ./...
 
 clean:
-	rm -rf *_mock.go coverage.out
+	rm -rf vendor *_mock.go coverage.out
