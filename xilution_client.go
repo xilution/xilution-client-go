@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -60,21 +59,16 @@ func NewXilutionClient(clientId, organizationId, username, password *string) (*X
 		OrganizationId: organizationId,
 	}
 
-	if clientId != nil && organizationId != nil && username != nil && password != nil {
-		// form request body
-		data := url.Values{}
-		data.Set("grant_type", "password")
-		data.Set("username", *username)
-		data.Set("password", *password)
-		data.Set("client_id", *clientId)
-		data.Set("scope", "read write")
+	grantType := "password"
+	scope := "read write"
 
-		println(data.Encode())
+	if clientId != nil && organizationId != nil && username != nil && password != nil {
+		data := fmt.Sprintf("grant_type=%s&client_id=%s&password=%s&username=%s&scope=%s", grantType, *clientId, *password, *username, scope)
 
 		// authenticate
-		req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/oauth/token", ZebraBaseUrl, *organizationId), strings.NewReader(data.Encode()))
+		req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/oauth/token", ZebraBaseUrl, *organizationId), strings.NewReader(data))
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-		req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
+		req.Header.Add("Content-Length", strconv.Itoa(len(data)))
 
 		res, err := xc.HttpClient.Do(req)
 		if err != nil {
