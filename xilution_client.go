@@ -32,7 +32,7 @@ var (
 )
 
 func init() {
-	IHttpClientImpl = &http.Client{Timeout: 10 * time.Second}
+	IHttpClientImpl = &http.Client{Timeout: 30 * time.Second}
 }
 
 // XilutionClient -
