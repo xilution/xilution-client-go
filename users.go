@@ -7,10 +7,10 @@ import (
 	"strings"
 )
 
-func (xc *XilutionClient) CreateUser(user *User) (*string, error) {
+func (xc *XilutionClient) CreateUser(organizationId *string, user *User) (*string, error) {
 	rb, _ := json.Marshal(user)
 
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/users", ElephantBaseUrl), strings.NewReader(string(rb)))
+	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/users", ElephantBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -20,8 +20,8 @@ func (xc *XilutionClient) CreateUser(user *User) (*string, error) {
 	return location, nil
 }
 
-func (xc *XilutionClient) GetUser(userId *string) (*User, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/users/%s", ElephantBaseUrl, *userId), nil)
+func (xc *XilutionClient) GetUser(organizationId *string, userId *string) (*User, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/users/%s", ElephantBaseUrl, *organizationId, *userId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -34,8 +34,8 @@ func (xc *XilutionClient) GetUser(userId *string) (*User, error) {
 	return &user, nil
 }
 
-func (xc *XilutionClient) GetUsers(pageSize, pageNumber *int) (*FetchUsersResponse, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/users?pageSize=%d&pageNumber=%d", ElephantBaseUrl, *pageSize, *pageNumber), nil)
+func (xc *XilutionClient) GetUsers(organizationId *string, pageSize, pageNumber *int) (*FetchUsersResponse, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/users?pageSize=%d&pageNumber=%d", ElephantBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -48,10 +48,10 @@ func (xc *XilutionClient) GetUsers(pageSize, pageNumber *int) (*FetchUsersRespon
 	return &fetchUsersResponse, nil
 }
 
-func (xc *XilutionClient) UpdateUser(user *User) error {
+func (xc *XilutionClient) UpdateUser(organizationId *string, user *User) error {
 	rb, _ := json.Marshal(user)
 
-	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s/users/%s", ElephantBaseUrl, user.ID), strings.NewReader(string(rb)))
+	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/users/%s", ElephantBaseUrl, *organizationId, user.ID), strings.NewReader(string(rb)))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -61,8 +61,8 @@ func (xc *XilutionClient) UpdateUser(user *User) error {
 	return nil
 }
 
-func (xc *XilutionClient) DeleteUser(userId *string) error {
-	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/users/%s", ElephantBaseUrl, *userId), strings.NewReader(string("")))
+func (xc *XilutionClient) DeleteUser(organizationId *string, userId *string) error {
+	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/users/%s", ElephantBaseUrl, *organizationId, *userId), strings.NewReader(string("")))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {

@@ -20,6 +20,7 @@ func Test__CreateClient__Happy_Path(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	client := buildTestClient()
 	location := gofakeit.URL()
 
@@ -35,7 +36,7 @@ func Test__CreateClient__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateClient(&client)
+	resp, err := xc.CreateClient(&organizationId, &client)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -49,6 +50,7 @@ func Test__CreateClient__When_doCreateRequest_Fails(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	client := buildTestClient()
 
 	errMsg := gofakeit.Sentence(10)
@@ -64,7 +66,7 @@ func Test__CreateClient__When_doCreateRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateClient(&client)
+	resp, err := xc.CreateClient(&organizationId, &client)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -78,6 +80,7 @@ func Test__GetClient__Happy_Path(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	client := buildTestClient()
 
 	json, _ := json.Marshal(&client)
@@ -92,7 +95,7 @@ func Test__GetClient__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetClient(&client.ID)
+	resp, err := xc.GetClient(&organizationId, &client.ID)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -106,6 +109,7 @@ func Test__GetClient__When_doGetRequest_Fails(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	client := buildTestClient()
 
 	errMsg := gofakeit.Sentence(10)
@@ -121,7 +125,7 @@ func Test__GetClient__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetClient(&client.ID)
+	resp, err := xc.GetClient(&organizationId, &client.ID)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -135,6 +139,7 @@ func Test__GetClients__Happy_Path(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	clients := []Client{
 		buildTestClient(),
 		buildTestClient(),
@@ -170,7 +175,7 @@ func Test__GetClients__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetClients(&pageSize, &pageNumber)
+	resp, err := xc.GetClients(&organizationId, &pageSize, &pageNumber)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -184,6 +189,7 @@ func Test__GetClients__When_doGetRequest_Fails(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	pageSize := gofakeit.Number(0, 100)
 	pageNumber := gofakeit.Number(0, 500)
 
@@ -200,7 +206,7 @@ func Test__GetClients__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetClients(&pageSize, &pageNumber)
+	resp, err := xc.GetClients(&organizationId, &pageSize, &pageNumber)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -214,6 +220,7 @@ func Test__UpdateClient__Happy_Path(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	client := buildTestClient()
 
 	r := ioutil.NopCloser(bytes.NewReader([]byte("")))
@@ -227,7 +234,7 @@ func Test__UpdateClient__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateClient(&client)
+	err := xc.UpdateClient(&organizationId, &client)
 
 	assert.Nil(t, err)
 }
@@ -239,6 +246,7 @@ func Test__UpdateClient__When_doNoContentRequest_Fails(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	client := buildTestClient()
 
 	errMsg := gofakeit.Sentence(10)
@@ -254,7 +262,7 @@ func Test__UpdateClient__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateClient(&client)
+	err := xc.UpdateClient(&organizationId, &client)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
@@ -267,6 +275,7 @@ func Test__DeleteClient__Happy_Path(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	clientId := buildTestId()
 
 	r := ioutil.NopCloser(bytes.NewReader([]byte("")))
@@ -280,7 +289,7 @@ func Test__DeleteClient__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteClient(&clientId)
+	err := xc.DeleteClient(&organizationId, &clientId)
 
 	assert.Nil(t, err)
 }
@@ -292,6 +301,7 @@ func Test__DeleteClient__When_doNoContentRequest_Fails(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	clientId := buildTestId()
 
 	errMsg := gofakeit.Sentence(10)
@@ -307,7 +317,7 @@ func Test__DeleteClient__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteClient(&clientId)
+	err := xc.DeleteClient(&organizationId, &clientId)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())

@@ -20,6 +20,7 @@ func Test__CreateUser__Happy_Path(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	user := buildTestUser()
 	location := gofakeit.URL()
 
@@ -35,7 +36,7 @@ func Test__CreateUser__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateUser(&user)
+	resp, err := xc.CreateUser(&organizationId, &user)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -49,6 +50,7 @@ func Test__CreateUser__When_doCreateRequest_Fails(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	user := buildTestUser()
 
 	errMsg := gofakeit.Sentence(10)
@@ -64,7 +66,7 @@ func Test__CreateUser__When_doCreateRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateUser(&user)
+	resp, err := xc.CreateUser(&organizationId, &user)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -78,6 +80,7 @@ func Test__GetUser__Happy_Path(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	user := buildTestUser()
 
 	json, _ := json.Marshal(&user)
@@ -92,7 +95,7 @@ func Test__GetUser__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetUser(&user.ID)
+	resp, err := xc.GetUser(&organizationId, &user.ID)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -106,6 +109,7 @@ func Test__GetUser__When_doGetRequest_Fails(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	user := buildTestUser()
 
 	errMsg := gofakeit.Sentence(10)
@@ -121,7 +125,7 @@ func Test__GetUser__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetUser(&user.ID)
+	resp, err := xc.GetUser(&organizationId, &user.ID)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -135,6 +139,7 @@ func Test__GetUsers__Happy_Path(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	users := []User{
 		buildTestUser(),
 		buildTestUser(),
@@ -170,7 +175,7 @@ func Test__GetUsers__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetUsers(&pageSize, &pageNumber)
+	resp, err := xc.GetUsers(&organizationId, &pageSize, &pageNumber)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -184,6 +189,7 @@ func Test__GetUsers__When_doGetRequest_Fails(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	pageSize := gofakeit.Number(0, 100)
 	pageNumber := gofakeit.Number(0, 500)
 
@@ -200,7 +206,7 @@ func Test__GetUsers__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetUsers(&pageSize, &pageNumber)
+	resp, err := xc.GetUsers(&organizationId, &pageSize, &pageNumber)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -214,6 +220,7 @@ func Test__UpdateUser__Happy_Path(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	user := buildTestUser()
 
 	r := ioutil.NopCloser(bytes.NewReader([]byte("")))
@@ -227,7 +234,7 @@ func Test__UpdateUser__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateUser(&user)
+	err := xc.UpdateUser(&organizationId, &user)
 
 	assert.Nil(t, err)
 }
@@ -239,6 +246,7 @@ func Test__UpdateUser__When_doNoContentRequest_Fails(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	user := buildTestUser()
 
 	errMsg := gofakeit.Sentence(10)
@@ -254,7 +262,7 @@ func Test__UpdateUser__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateUser(&user)
+	err := xc.UpdateUser(&organizationId, &user)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
@@ -267,6 +275,7 @@ func Test__DeleteUser__Happy_Path(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	userId := buildTestId()
 
 	r := ioutil.NopCloser(bytes.NewReader([]byte("")))
@@ -280,7 +289,7 @@ func Test__DeleteUser__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteUser(&userId)
+	err := xc.DeleteUser(&organizationId, &userId)
 
 	assert.Nil(t, err)
 }
@@ -292,6 +301,7 @@ func Test__DeleteUser__When_doNoContentRequest_Fails(t *testing.T) {
 
 	m := NewMockIHttpClient(ctrl)
 
+	organizationId := buildTestId()
 	userId := buildTestId()
 
 	errMsg := gofakeit.Sentence(10)
@@ -307,7 +317,7 @@ func Test__DeleteUser__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteUser(&userId)
+	err := xc.DeleteUser(&organizationId, &userId)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
