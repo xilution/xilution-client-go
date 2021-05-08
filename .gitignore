@@ -1,3 +1,5 @@
+.idea
+.vscode
 vendor
 coverage.out
 *_mock.go
