@@ -70,7 +70,7 @@ func NewXilutionClient(clientId, organizationId, username, password *string) (*X
 		data.Set("scope", "read write")
 
 		// authenticate
-		req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/oauth/token", *organizationId, ZebraBaseUrl), strings.NewReader(data.Encode()))
+		req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/oauth/token", ZebraBaseUrl, *organizationId), strings.NewReader(data.Encode()))
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 		req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
 
