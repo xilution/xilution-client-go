@@ -19,6 +19,8 @@ const (
 	RhinoBaseUrl    ProductUrl = "https://rhino.basics.api.xilution.com"
 	HippoBaseUrl    ProductUrl = "https://hippo.basics.api.xilution.com"
 	ZebraBaseUrl    ProductUrl = "https://zebra.basics.api.xilution.com"
+	SwanBaseUrl     ProductUrl = "https://swan.basics.api.xilution.com"
+	KangarooBaseUrl ProductUrl = "https://kangaroo.basics.api.xilution.com"
 )
 
 // HTTPClient interface

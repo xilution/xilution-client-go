@@ -80,3 +80,91 @@ type FetchUsersResponse struct {
 	FirstPage        bool `json:"firstPage"`
 	LastPage         bool `json:"lastPage"`
 }
+
+// Git Account -
+type GitAccount struct {
+	Type           string `json:"@type"`
+	ID             string `json:"id"`
+	Provider       string `json:"provider"`
+	Name           string `json:"name"`
+	OwningUserId   string `json:"owningUserId"`
+	CreatedAt      string `json:"createdAt"`
+	ModifiedAt     string `json:"modifiedAt"`
+	OrganizationId string `json:"organizationId"`
+}
+
+// FetchGitAccountsResponse -
+type FetchGitAccountsResponse struct {
+	Content          []GitAccount
+	PageSize         int  `json:"pageSize"`
+	PageNumber       int  `json:"pageNumber"`
+	TotalPages       int  `json:"totalPages"`
+	NumberOfElements int  `json:"numberOfElements"`
+	TotalElements    int  `json:"totalElements"`
+	FirstPage        bool `json:"firstPage"`
+	LastPage         bool `json:"lastPage"`
+}
+
+// Git Repo -
+type GitRepo struct {
+	Type           string `json:"@type"`
+	ID             string `json:"id"`
+	GitAccountId   string `json:"gitAccountId"`
+	Name           string `json:"name"`
+	OwningUserId   string `json:"owningUserId"`
+	CreatedAt      string `json:"createdAt"`
+	ModifiedAt     string `json:"modifiedAt"`
+	OrganizationId string `json:"organizationId"`
+}
+
+// FetchGitReposResponse -
+type FetchGitReposResponse struct {
+	Content          []GitRepo
+	PageSize         int  `json:"pageSize"`
+	PageNumber       int  `json:"pageNumber"`
+	TotalPages       int  `json:"totalPages"`
+	NumberOfElements int  `json:"numberOfElements"`
+	TotalElements    int  `json:"totalElements"`
+	FirstPage        bool `json:"firstPage"`
+	LastPage         bool `json:"lastPage"`
+}
+
+// Git Repo Event -
+type GitRepoEvent struct {
+	Type           string            `json:"@type"`
+	ID             string            `json:"id"`
+	GitAccountId   string            `json:"gitAccountId"`
+	GitRepoId      string            `json:"gitRepoId"`
+	EventType      string            `json:"eventType"`
+	Parameters     map[string]string `json:"parameters"`
+	OwningUserId   string            `json:"owningUserId"`
+	CreatedAt      string            `json:"createdAt"`
+	ModifiedAt     string            `json:"modifiedAt"`
+	OrganizationId string            `json:"organizationId"`
+}
+
+// Cloud Provider -
+type CloudProvider struct {
+	Type           string `json:"@type"`
+	ID             string `json:"id"`
+	Provider       string `json:"provider"`
+	Name           string `json:"name"`
+	AccountId      string `json:"accountId"`
+	Region         string `json:"region"`
+	OwningUserId   string `json:"owningUserId"`
+	CreatedAt      string `json:"createdAt"`
+	ModifiedAt     string `json:"modifiedAt"`
+	OrganizationId string `json:"organizationId"`
+}
+
+// FetchCloudProvidersResponse -
+type FetchCloudProvidersResponse struct {
+	Content          []CloudProvider
+	PageSize         int  `json:"pageSize"`
+	PageNumber       int  `json:"pageNumber"`
+	TotalPages       int  `json:"totalPages"`
+	NumberOfElements int  `json:"numberOfElements"`
+	TotalElements    int  `json:"totalElements"`
+	FirstPage        bool `json:"firstPage"`
+	LastPage         bool `json:"lastPage"`
+}
