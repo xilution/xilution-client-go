@@ -642,6 +642,7 @@ func Test__DeleteGitRepo__When_doNoContentRequest_Fails(t *testing.T) {
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
 }
+
 func Test__CreateGitRepoEvent__Happy_Path(t *testing.T) {
 	ctrl := gomock.NewController(t)
 
@@ -700,6 +701,154 @@ func Test__CreateGitRepoEvent__When_doCreateRequest_Fails(t *testing.T) {
 	}
 
 	resp, err := xc.CreateGitRepoEvent(&organizationId, &gitAccountId, &gitRepoId, &gitRepoEvent)
+
+	assert.Nil(t, resp)
+	assert.NotNil(t, err)
+	assert.EqualValues(t, errMsg, err.Error())
+}
+
+func Test__GetGitRepoEvent__Happy_Path(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	m := NewMockIHttpClient(ctrl)
+
+	organizationId := buildTestId()
+	gitAccountId := buildTestId()
+	gitRepoId := buildTestId()
+	gitRepoEvent := buildTestGitRepoEvent()
+
+	json, _ := json.Marshal(&gitRepoEvent)
+	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
+	m.EXPECT().Do(gomock.Any()).Return(&http.Response{
+		StatusCode: http.StatusOK,
+		Body:       r,
+	}, nil)
+
+	xc := XilutionClient{
+		HttpClient: m,
+		Token:      buildJwtToken(),
+	}
+
+	resp, err := xc.GetGitRepoEvent(&organizationId, &gitAccountId, &gitRepoId, &gitRepoEvent.ID)
+
+	assert.NotNil(t, resp)
+	assert.Nil(t, err)
+	assert.EqualValues(t, &gitRepoEvent, resp)
+}
+
+func Test__GetGitRepoEvent__When_doGetRequest_Fails(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	m := NewMockIHttpClient(ctrl)
+
+	organizationId := buildTestId()
+	gitAccountId := buildTestId()
+	gitRepoId := buildTestId()
+	gitRepoEvent := buildTestGitRepoEvent()
+
+	errMsg := gofakeit.Sentence(10)
+	json := fmt.Sprintf(`{"message": "%s"}`, errMsg)
+	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
+	m.EXPECT().Do(gomock.Any()).Return(&http.Response{
+		StatusCode: 500,
+		Body:       r,
+	}, nil)
+
+	xc := XilutionClient{
+		HttpClient: m,
+		Token:      buildJwtToken(),
+	}
+
+	resp, err := xc.GetGitRepoEvent(&organizationId, &gitAccountId, &gitRepoId, &gitRepoEvent.ID)
+
+	assert.Nil(t, resp)
+	assert.NotNil(t, err)
+	assert.EqualValues(t, errMsg, err.Error())
+}
+
+func Test__GetGitRepoEvents__Happy_Path(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	m := NewMockIHttpClient(ctrl)
+
+	organizationId := buildTestId()
+	gitAccountId := buildTestId()
+	gitRepoId := buildTestId()
+	gitRepoEvents := []GitRepoEvent{
+		buildTestGitRepoEvent(),
+		buildTestGitRepoEvent(),
+		buildTestGitRepoEvent(),
+	}
+	pageSize := gofakeit.Number(0, 100)
+	pageNumber := gofakeit.Number(0, 500)
+	totalPages := gofakeit.Number(0, 500)
+	numberOfElements := gofakeit.Number(0, 500)
+	totalElements := gofakeit.Number(0, 500)
+	firstPage := gofakeit.Bool()
+	lastPage := gofakeit.Bool()
+	fetchGitRepoEventsResponse := FetchGitRepoEventsResponse{
+		Content:          gitRepoEvents,
+		PageSize:         pageSize,
+		PageNumber:       pageNumber,
+		TotalPages:       totalPages,
+		NumberOfElements: numberOfElements,
+		TotalElements:    totalElements,
+		FirstPage:        firstPage,
+		LastPage:         lastPage,
+	}
+
+	json, _ := json.Marshal(&fetchGitRepoEventsResponse)
+	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
+	m.EXPECT().Do(gomock.Any()).Return(&http.Response{
+		StatusCode: http.StatusOK,
+		Body:       r,
+	}, nil)
+
+	xc := XilutionClient{
+		HttpClient: m,
+		Token:      buildJwtToken(),
+	}
+
+	resp, err := xc.GetGitRepoEvents(&organizationId, &gitAccountId, &gitRepoId, &pageSize, &pageNumber)
+
+	assert.NotNil(t, resp)
+	assert.Nil(t, err)
+	assert.EqualValues(t, &fetchGitRepoEventsResponse, resp)
+}
+
+func Test__GetGitRepoEvents__When_doGetRequest_Fails(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	m := NewMockIHttpClient(ctrl)
+
+	organizationId := buildTestId()
+	gitAccountId := buildTestId()
+	gitRepoId := buildTestId()
+	pageSize := gofakeit.Number(0, 100)
+	pageNumber := gofakeit.Number(0, 500)
+
+	errMsg := gofakeit.Sentence(10)
+	json := fmt.Sprintf(`{"message": "%s"}`, errMsg)
+	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
+	m.EXPECT().Do(gomock.Any()).Return(&http.Response{
+		StatusCode: 500,
+		Body:       r,
+	}, nil)
+
+	xc := XilutionClient{
+		HttpClient: m,
+		Token:      buildJwtToken(),
+	}
+
+	resp, err := xc.GetGitRepoEvents(&organizationId, &gitAccountId, &gitRepoId, &pageSize, &pageNumber)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)

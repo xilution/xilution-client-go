@@ -93,10 +93,10 @@ func (xc *XilutionClient) GetGitRepo(organizationId, gitAccountId, gitRepoId *st
 		return nil, err
 	}
 
-	gitrepo := GitRepo{}
-	json.Unmarshal(body, &gitrepo)
+	gitRepo := GitRepo{}
+	json.Unmarshal(body, &gitRepo)
 
-	return &gitrepo, nil
+	return &gitRepo, nil
 }
 
 func (xc *XilutionClient) GetGitRepos(organizationId, gitAccountId *string, pageSize, pageNumber *int) (*FetchGitReposResponse, error) {
@@ -148,4 +148,32 @@ func (xc *XilutionClient) CreateGitRepoEvent(organizationId, gitAccountId, gitRe
 	}
 
 	return location, nil
+}
+
+func (xc *XilutionClient) GetGitRepoEvent(organizationId, gitAccountId, gitRepoId, eventId *string) (*GitRepoEvent, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-accounts/%s/git-repos/%s/events/%s", SwanBaseUrl, *organizationId, *gitAccountId, *gitRepoId, *eventId), nil)
+
+	body, err := xc.doGetRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	gitRepoEvent := GitRepoEvent{}
+	json.Unmarshal(body, &gitRepoEvent)
+
+	return &gitRepoEvent, nil
+}
+
+func (xc *XilutionClient) GetGitRepoEvents(organizationId, gitAccountId, gitRepoId *string, pageSize, pageNumber *int) (*FetchGitRepoEventsResponse, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-accounts/%s/git-repos/%s/events?pageSize=%d&pageNumber=%d", SwanBaseUrl, *organizationId, *gitAccountId, *gitRepoId, *pageSize, *pageNumber), nil)
+
+	body, err := xc.doGetRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	fetchGitRepoEventsResponse := FetchGitRepoEventsResponse{}
+	json.Unmarshal(body, &fetchGitRepoEventsResponse)
+
+	return &fetchGitRepoEventsResponse, nil
 }

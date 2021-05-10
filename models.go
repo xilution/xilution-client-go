@@ -143,6 +143,18 @@ type GitRepoEvent struct {
 	OrganizationId string            `json:"organizationId"`
 }
 
+// FetchGitRepoEventsResponse -
+type FetchGitRepoEventsResponse struct {
+	Content          []GitRepoEvent
+	PageSize         int  `json:"pageSize"`
+	PageNumber       int  `json:"pageNumber"`
+	TotalPages       int  `json:"totalPages"`
+	NumberOfElements int  `json:"numberOfElements"`
+	TotalElements    int  `json:"totalElements"`
+	FirstPage        bool `json:"firstPage"`
+	LastPage         bool `json:"lastPage"`
+}
+
 // Cloud Provider -
 type CloudProvider struct {
 	Type           string `json:"@type"`
