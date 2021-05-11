@@ -43,7 +43,7 @@ type Client struct {
 	ClientUserId   string   `json:"clientUserId"`
 	OrganizationId string   `json:"organizationId"`
 	Active         bool     `json:"active"`
-	secret         string   `json:"secret,omitempty"`
+	Secret         string   `json:"secret,omitempty"`
 }
 
 // FetchClientsResponse -
