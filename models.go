@@ -3,16 +3,19 @@ package xilution
 // Organization -
 type Organization struct {
 	Type           string `json:"@type"`
-	ID             string `json:"id"`
+	ID             string `json:"id,omitempty"`
 	OwningUserId   string `json:"owningUserId"`
-	CreatedAt      string `json:"createdAt"`
-	ModifiedAt     string `json:"modifiedAt"`
+	CreatedAt      string `json:"createdAt,omitempty"`
+	ModifiedAt     string `json:"modifiedAt,omitempty"`
 	Name           string `json:"name"`
-	Logo           string `json:"logo"`
-	Domain         string `json:"domain"`
-	IamClientId    string `json:"iamClientId"`
+	Logo           string `json:"logo,omitempty"`
+	Domain         string `json:"domain,omitempty"`
+	AuthClientId   string `json:"authClientId,omitempty"`
 	OrganizationId string `json:"organizationId"`
 	Active         bool   `json:"active"`
+	Url            string `json:"url,omitempty"`
+	AutoAuth       bool   `json:"autoAuth,omitempty"`
+	ShowSignUp     bool   `json:"showSignUp,omitempty"`
 }
 
 // FetchOrganizationsResponse -
@@ -30,16 +33,17 @@ type FetchOrganizationsResponse struct {
 // Client -
 type Client struct {
 	Type           string   `json:"@type"`
-	ID             string   `json:"id"`
+	ID             string   `json:"id,omitempty"`
 	OwningUserId   string   `json:"owningUserId"`
-	CreatedAt      string   `json:"createdAt"`
-	ModifiedAt     string   `json:"modifiedAt"`
+	CreatedAt      string   `json:"createdAt,omitempty"`
+	ModifiedAt     string   `json:"modifiedAt,omitempty"`
 	Name           string   `json:"name"`
 	Grants         []string `json:"grants"`
 	RedirectUris   []string `json:"redirectUris"`
 	ClientUserId   string   `json:"clientUserId"`
 	OrganizationId string   `json:"organizationId"`
 	Active         bool     `json:"active"`
+	secret         string   `json:"secret,omitempty"`
 }
 
 // FetchClientsResponse -
@@ -57,10 +61,10 @@ type FetchClientsResponse struct {
 // User -
 type User struct {
 	Type           string `json:"@type"`
-	ID             string `json:"id"`
+	ID             string `json:"id,omitempty"`
 	OwningUserId   string `json:"owningUserId"`
-	CreatedAt      string `json:"createdAt"`
-	ModifiedAt     string `json:"modifiedAt"`
+	CreatedAt      string `json:"createdAt,omitempty"`
+	ModifiedAt     string `json:"modifiedAt,omitempty"`
 	FirstName      string `json:"firstName"`
 	LastName       string `json:"lastName"`
 	Email          string `json:"email"`
@@ -84,12 +88,12 @@ type FetchUsersResponse struct {
 // Git Account -
 type GitAccount struct {
 	Type           string `json:"@type"`
-	ID             string `json:"id"`
+	ID             string `json:"id,omitempty"`
 	Provider       string `json:"provider"`
 	Name           string `json:"name"`
 	OwningUserId   string `json:"owningUserId"`
-	CreatedAt      string `json:"createdAt"`
-	ModifiedAt     string `json:"modifiedAt"`
+	CreatedAt      string `json:"createdAt,omitempty"`
+	ModifiedAt     string `json:"modifiedAt,omitempty"`
 	OrganizationId string `json:"organizationId"`
 }
 
@@ -108,12 +112,12 @@ type FetchGitAccountsResponse struct {
 // Git Repo -
 type GitRepo struct {
 	Type           string `json:"@type"`
-	ID             string `json:"id"`
+	ID             string `json:"id,omitempty"`
 	GitAccountId   string `json:"gitAccountId"`
 	Name           string `json:"name"`
 	OwningUserId   string `json:"owningUserId"`
-	CreatedAt      string `json:"createdAt"`
-	ModifiedAt     string `json:"modifiedAt"`
+	CreatedAt      string `json:"createdAt,omitempty"`
+	ModifiedAt     string `json:"modifiedAt,omitempty"`
 	OrganizationId string `json:"organizationId"`
 }
 
@@ -132,14 +136,14 @@ type FetchGitReposResponse struct {
 // Git Repo Event -
 type GitRepoEvent struct {
 	Type           string            `json:"@type"`
-	ID             string            `json:"id"`
+	ID             string            `json:"id,omitempty"`
 	GitAccountId   string            `json:"gitAccountId"`
 	GitRepoId      string            `json:"gitRepoId"`
 	EventType      string            `json:"eventType"`
 	Parameters     map[string]string `json:"parameters"`
 	OwningUserId   string            `json:"owningUserId"`
-	CreatedAt      string            `json:"createdAt"`
-	ModifiedAt     string            `json:"modifiedAt"`
+	CreatedAt      string            `json:"createdAt,omitempty"`
+	ModifiedAt     string            `json:"modifiedAt,omitempty"`
 	OrganizationId string            `json:"organizationId"`
 }
 
@@ -158,14 +162,14 @@ type FetchGitRepoEventsResponse struct {
 // Cloud Provider -
 type CloudProvider struct {
 	Type           string `json:"@type"`
-	ID             string `json:"id"`
+	ID             string `json:"id,omitempty"`
 	Provider       string `json:"provider"`
 	Name           string `json:"name"`
 	AccountId      string `json:"accountId"`
 	Region         string `json:"region"`
 	OwningUserId   string `json:"owningUserId"`
-	CreatedAt      string `json:"createdAt"`
-	ModifiedAt     string `json:"modifiedAt"`
+	CreatedAt      string `json:"createdAt,omitempty"`
+	ModifiedAt     string `json:"modifiedAt,omitempty"`
 	OrganizationId string `json:"organizationId"`
 }
 

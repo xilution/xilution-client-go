@@ -33,7 +33,7 @@ func buildTestOrganization() Organization {
 		Name:           gofakeit.Company(),
 		Logo:           b64.StdEncoding.EncodeToString([]byte(string(gofakeit.ImagePng(50, 50)))),
 		Domain:         gofakeit.DomainName(),
-		IamClientId:    buildTestId(),
+		AuthClientId:   buildTestId(),
 		OrganizationId: buildTestId(),
 		Active:         gofakeit.Bool(),
 	}
