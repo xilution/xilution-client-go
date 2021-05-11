@@ -140,7 +140,7 @@ func (xc *XilutionClient) DeleteGitRepo(organizationId, gitAccountId, gitRepoId 
 func (xc *XilutionClient) CreateGitRepoEvent(organizationId, gitAccountId, gitRepoId *string, gitRepoEvent *GitRepoEvent) (*string, error) {
 	rb, _ := json.Marshal(gitRepoEvent)
 
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-accounts/%s/git-repos/%s/git-repo-events", SwanBaseUrl, *organizationId, *gitAccountId, *gitRepoId), strings.NewReader(string(rb)))
+	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-accounts/%s/git-repos/%s/events", SwanBaseUrl, *organizationId, *gitAccountId, *gitRepoId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
