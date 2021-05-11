@@ -8,15 +8,9 @@ import (
 )
 
 func (xc *XilutionClient) CreateGitAccount(organizationId *string, gitAccount *GitAccount) (*string, error) {
-	rb, err := json.Marshal(gitAccount)
-	if err != nil {
-		return nil, err
-	}
+	rb, _ := json.Marshal(gitAccount)
 
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-accounts", SwanBaseUrl, *organizationId), strings.NewReader(string(rb)))
-	if err != nil {
-		return nil, err
-	}
+	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-accounts", SwanBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
