@@ -135,16 +135,16 @@ type FetchGitReposResponse struct {
 
 // Git Repo Event -
 type GitRepoEvent struct {
-	Type           string            `json:"@type"`
-	ID             string            `json:"id,omitempty"`
-	GitAccountId   string            `json:"gitAccountId"`
-	GitRepoId      string            `json:"gitRepoId"`
-	EventType      string            `json:"eventType"`
-	Parameters     map[string]string `json:"parameters"`
-	OwningUserId   string            `json:"owningUserId"`
-	CreatedAt      string            `json:"createdAt,omitempty"`
-	ModifiedAt     string            `json:"modifiedAt,omitempty"`
-	OrganizationId string            `json:"organizationId"`
+	Type           string                 `json:"@type"`
+	ID             string                 `json:"id,omitempty"`
+	GitAccountId   string                 `json:"gitAccountId"`
+	GitRepoId      string                 `json:"gitRepoId"`
+	EventType      string                 `json:"eventType"`
+	Parameters     map[string]interface{} `json:"parameters"`
+	OwningUserId   string                 `json:"owningUserId"`
+	CreatedAt      string                 `json:"createdAt,omitempty"`
+	ModifiedAt     string                 `json:"modifiedAt,omitempty"`
+	OrganizationId string                 `json:"organizationId"`
 }
 
 // FetchGitRepoEventsResponse -
