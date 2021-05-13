@@ -21,6 +21,11 @@ const (
 	ZebraBaseUrl    ProductUrl = "https://zebra.basics.api.xilution.com"
 	SwanBaseUrl     ProductUrl = "https://swan.basics.api.xilution.com"
 	KangarooBaseUrl ProductUrl = "https://kangaroo.basics.api.xilution.com"
+	GazelleBaseUrl  ProductUrl = "https://gazelle.basics.api.xilution.com"
+	GiraffeBaseUrl  ProductUrl = "https://giraffe.basics.api.xilution.com"
+	PenguinBaseUrl  ProductUrl = "https://penguin.cms.api.xilution.com"
+	CoyoteBaseUrl   ProductUrl = "https://coyote.content-delivery.api.xilution.com"
+	FoxBaseUrl      ProductUrl = "https://fox.integration.api.xilution.com"
 )
 
 // HTTPClient interface

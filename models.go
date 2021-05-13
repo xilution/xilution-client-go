@@ -184,3 +184,142 @@ type FetchCloudProvidersResponse struct {
 	FirstPage        bool `json:"firstPage"`
 	LastPage         bool `json:"lastPage"`
 }
+
+// VPC Pipelines
+type VpcPipeline struct {
+	Type            string `json:"@type"`
+	ID              string `json:"id,omitempty"`
+	Name            string `json:"name"`
+	PipelineType    string `json:"pipelineType"`
+	CloudProviderId string `json:"cloudProviderId"`
+	OwningUserId    string `json:"owningUserId"`
+	CreatedAt       string `json:"createdAt,omitempty"`
+	ModifiedAt      string `json:"modifiedAt,omitempty"`
+	OrganizationId  string `json:"organizationId"`
+}
+
+// FetchVpcPipelinesResponse -
+type FetchVpcPipelinesResponse struct {
+	Content          []VpcPipeline
+	PageSize         int  `json:"pageSize"`
+	PageNumber       int  `json:"pageNumber"`
+	TotalPages       int  `json:"totalPages"`
+	NumberOfElements int  `json:"numberOfElements"`
+	TotalElements    int  `json:"totalElements"`
+	FirstPage        bool `json:"firstPage"`
+	LastPage         bool `json:"lastPage"`
+}
+
+// K8s Pipelines
+type K8sPipeline struct {
+	Type           string `json:"@type"`
+	ID             string `json:"id,omitempty"`
+	Name           string `json:"name"`
+	PipelineType   string `json:"pipelineType"`
+	VpcPipelineId  string `json:"gazellePipelineId"`
+	OwningUserId   string `json:"owningUserId"`
+	CreatedAt      string `json:"createdAt,omitempty"`
+	ModifiedAt     string `json:"modifiedAt,omitempty"`
+	OrganizationId string `json:"organizationId"`
+}
+
+// FetchK8sPipelinesResponse -
+type FetchK8sPipelinesResponse struct {
+	Content          []K8sPipeline
+	PageSize         int  `json:"pageSize"`
+	PageNumber       int  `json:"pageNumber"`
+	TotalPages       int  `json:"totalPages"`
+	NumberOfElements int  `json:"numberOfElements"`
+	TotalElements    int  `json:"totalElements"`
+	FirstPage        bool `json:"firstPage"`
+	LastPage         bool `json:"lastPage"`
+}
+
+// Stage
+type Stage struct {
+	Name string `json:"name"`
+}
+
+// WordPress Pipelines
+type WordPressPipeline struct {
+	Type           string  `json:"@type"`
+	ID             string  `json:"id,omitempty"`
+	Name           string  `json:"name"`
+	PipelineType   string  `json:"pipelineType"`
+	K8sPipelineId  string  `json:"gazellePipelineId"`
+	GitRepoId      string  `json:"gitRepoId"`
+	Branch         string  `json:"branch"`
+	Stages         []Stage `json:"stages"`
+	OwningUserId   string  `json:"owningUserId"`
+	CreatedAt      string  `json:"createdAt,omitempty"`
+	ModifiedAt     string  `json:"modifiedAt,omitempty"`
+	OrganizationId string  `json:"organizationId"`
+}
+
+// FetchWordPressPipelinesResponse -
+type FetchWordPressPipelinesResponse struct {
+	Content          []WordPressPipeline
+	PageSize         int  `json:"pageSize"`
+	PageNumber       int  `json:"pageNumber"`
+	TotalPages       int  `json:"totalPages"`
+	NumberOfElements int  `json:"numberOfElements"`
+	TotalElements    int  `json:"totalElements"`
+	FirstPage        bool `json:"firstPage"`
+	LastPage         bool `json:"lastPage"`
+}
+
+// Static Content Pipelines
+type StaticContentPipeline struct {
+	Type            string  `json:"@type"`
+	ID              string  `json:"id,omitempty"`
+	Name            string  `json:"name"`
+	PipelineType    string  `json:"pipelineType"`
+	CloudProviderId string  `json:"cloudProviderId"`
+	GitRepoId       string  `json:"gitRepoId"`
+	Branch          string  `json:"branch"`
+	Stages          []Stage `json:"stages"`
+	OwningUserId    string  `json:"owningUserId"`
+	CreatedAt       string  `json:"createdAt,omitempty"`
+	ModifiedAt      string  `json:"modifiedAt,omitempty"`
+	OrganizationId  string  `json:"organizationId"`
+}
+
+// FetchStaticContentPipelinesResponse -
+type FetchStaticContentPipelinesResponse struct {
+	Content          []StaticContentPipeline
+	PageSize         int  `json:"pageSize"`
+	PageNumber       int  `json:"pageNumber"`
+	TotalPages       int  `json:"totalPages"`
+	NumberOfElements int  `json:"numberOfElements"`
+	TotalElements    int  `json:"totalElements"`
+	FirstPage        bool `json:"firstPage"`
+	LastPage         bool `json:"lastPage"`
+}
+
+// Api Pipelines
+type ApiPipeline struct {
+	Type           string  `json:"@type"`
+	ID             string  `json:"id,omitempty"`
+	Name           string  `json:"name"`
+	PipelineType   string  `json:"pipelineType"`
+	VpcPipelineId  string  `json:"gazellePipelineId"`
+	GitRepoId      string  `json:"gitRepoId"`
+	Branch         string  `json:"branch"`
+	Stages         []Stage `json:"stages"`
+	OwningUserId   string  `json:"owningUserId"`
+	CreatedAt      string  `json:"createdAt,omitempty"`
+	ModifiedAt     string  `json:"modifiedAt,omitempty"`
+	OrganizationId string  `json:"organizationId"`
+}
+
+// FetchApiPipelinesResponse -
+type FetchApiPipelinesResponse struct {
+	Content          []ApiPipeline
+	PageSize         int  `json:"pageSize"`
+	PageNumber       int  `json:"pageNumber"`
+	TotalPages       int  `json:"totalPages"`
+	NumberOfElements int  `json:"numberOfElements"`
+	TotalElements    int  `json:"totalElements"`
+	FirstPage        bool `json:"firstPage"`
+	LastPage         bool `json:"lastPage"`
+}

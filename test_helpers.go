@@ -105,15 +105,15 @@ func buildTestGitRepoEvent() GitRepoEvent {
 		ModifiedAt:   gofakeit.Date().Format(time.RFC3339),
 		EventType:    "CREATE_REPO_FROM_TEMPLATE_REPO",
 		Parameters: map[string]interface{}{
-			"sourceOwner": gofakeit.Word(),
-			"sourceRepo": gofakeit.Word(),
-			"rootPath": "/",
-			"targetOwner": gofakeit.Word(),
-			"targetRepo": gofakeit.Word(),
-			"isPrivate": true,
-			"description": gofakeit.Sentence(10),
+			"sourceOwner":   gofakeit.Word(),
+			"sourceRepo":    gofakeit.Word(),
+			"rootPath":      "/",
+			"targetOwner":   gofakeit.Word(),
+			"targetRepo":    gofakeit.Word(),
+			"isPrivate":     true,
+			"description":   gofakeit.Sentence(10),
 			"commitMessage": gofakeit.Sentence(10),
-			"params": `{"foo": "bar", "boo": "baz"}`,
+			"params":        `{"foo": "bar", "boo": "baz"}`,
 		},
 		GitAccountId:   buildTestId(),
 		GitRepoId:      buildTestId(),
@@ -131,6 +131,105 @@ func buildTestCloudProvider() CloudProvider {
 		Provider:       "AWS",
 		Name:           gofakeit.Word(),
 		AccountId:      strconv.Itoa(gofakeit.Number(100000000, 999999999)),
+		OrganizationId: buildTestId(),
+	}
+}
+
+func buildTestVpcPipeline() VpcPipeline {
+	return VpcPipeline{
+		Type:            "pipeline",
+		ID:              buildTestId(),
+		CloudProviderId: buildTestId(),
+		OwningUserId:    buildTestId(),
+		CreatedAt:       gofakeit.Date().Format(time.RFC3339),
+		ModifiedAt:      gofakeit.Date().Format(time.RFC3339),
+		OrganizationId:  buildTestId(),
+	}
+}
+
+func buildTestK8sPipeline() K8sPipeline {
+	return K8sPipeline{
+		Type:           "pipeline",
+		ID:             buildTestId(),
+		VpcPipelineId:  buildTestId(),
+		OwningUserId:   buildTestId(),
+		CreatedAt:      gofakeit.Date().Format(time.RFC3339),
+		ModifiedAt:     gofakeit.Date().Format(time.RFC3339),
+		OrganizationId: buildTestId(),
+	}
+}
+
+func buildTestWordPressPipeline() WordPressPipeline {
+	return WordPressPipeline{
+		Type:          "pipeline",
+		ID:            buildTestId(),
+		K8sPipelineId: buildTestId(),
+		GitRepoId:     buildTestId(),
+		Branch:        gofakeit.Word(),
+		Stages: []Stage{
+			{
+				Name: gofakeit.Word(),
+			},
+			{
+				Name: gofakeit.Word(),
+			},
+			{
+				Name: gofakeit.Word(),
+			},
+		},
+		OwningUserId:   buildTestId(),
+		CreatedAt:      gofakeit.Date().Format(time.RFC3339),
+		ModifiedAt:     gofakeit.Date().Format(time.RFC3339),
+		OrganizationId: buildTestId(),
+	}
+}
+
+func buildTestStaticContentPipeline() StaticContentPipeline {
+	return StaticContentPipeline{
+		Type:            "pipeline",
+		ID:              buildTestId(),
+		CloudProviderId: buildTestId(),
+		GitRepoId:       buildTestId(),
+		Branch:          gofakeit.Word(),
+		Stages: []Stage{
+			{
+				Name: gofakeit.Word(),
+			},
+			{
+				Name: gofakeit.Word(),
+			},
+			{
+				Name: gofakeit.Word(),
+			},
+		},
+		OwningUserId:   buildTestId(),
+		CreatedAt:      gofakeit.Date().Format(time.RFC3339),
+		ModifiedAt:     gofakeit.Date().Format(time.RFC3339),
+		OrganizationId: buildTestId(),
+	}
+}
+
+func buildTestApiPipeline() ApiPipeline {
+	return ApiPipeline{
+		Type:          "pipeline",
+		ID:            buildTestId(),
+		VpcPipelineId: buildTestId(),
+		GitRepoId:     buildTestId(),
+		Branch:        gofakeit.Word(),
+		Stages: []Stage{
+			{
+				Name: gofakeit.Word(),
+			},
+			{
+				Name: gofakeit.Word(),
+			},
+			{
+				Name: gofakeit.Word(),
+			},
+		},
+		OwningUserId:   buildTestId(),
+		CreatedAt:      gofakeit.Date().Format(time.RFC3339),
+		ModifiedAt:     gofakeit.Date().Format(time.RFC3339),
 		OrganizationId: buildTestId(),
 	}
 }
