@@ -166,7 +166,7 @@ func buildTestWordPressPipeline() WordPressPipeline {
 		K8sPipelineId: buildTestId(),
 		GitRepoId:     buildTestId(),
 		Branch:        gofakeit.Word(),
-		Stages: []Stage{
+		Stages: []WordPressStage{
 			{
 				Name: gofakeit.Word(),
 			},
@@ -191,7 +191,7 @@ func buildTestStaticContentPipeline() StaticContentPipeline {
 		CloudProviderId: buildTestId(),
 		GitRepoId:       buildTestId(),
 		Branch:          gofakeit.Word(),
-		Stages: []Stage{
+		Stages: []StaticContentStage{
 			{
 				Name: gofakeit.Word(),
 			},
@@ -216,7 +216,7 @@ func buildTestApiPipeline() ApiPipeline {
 		VpcPipelineId: buildTestId(),
 		GitRepoId:     buildTestId(),
 		Branch:        gofakeit.Word(),
-		Stages: []Stage{
+		Stages: []ApiStage{
 			{
 				Name: gofakeit.Word(),
 			},

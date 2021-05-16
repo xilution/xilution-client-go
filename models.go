@@ -1,5 +1,19 @@
 package xilution
 
+// Link Label -
+type LinkLabel struct {
+	Default string `json:"default"`
+	En      string `json:"en,omitempty"`
+}
+
+// Links -
+type Link struct {
+	Href  string    `json:"href"`
+	Rel   string    `json:"rel,omitempty"`
+	Label LinkLabel `json:"label,omitempty"`
+	Type  string    `json:"type,omitempty"`
+}
+
 // Organization -
 type Organization struct {
 	Type           string `json:"@type"`
@@ -16,18 +30,21 @@ type Organization struct {
 	Url            string `json:"url,omitempty"`
 	AutoAuth       bool   `json:"autoAuth,omitempty"`
 	ShowSignUp     bool   `json:"showSignUp,omitempty"`
+	Links          []Link `json:"links,omitempty"`
 }
 
-// FetchOrganizationsResponse -
+// Fetch Organizations Response -
 type FetchOrganizationsResponse struct {
 	Content          []Organization
-	PageSize         int  `json:"pageSize"`
-	PageNumber       int  `json:"pageNumber"`
-	TotalPages       int  `json:"totalPages"`
-	NumberOfElements int  `json:"numberOfElements"`
-	TotalElements    int  `json:"totalElements"`
-	FirstPage        bool `json:"firstPage"`
-	LastPage         bool `json:"lastPage"`
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
 }
 
 // Client -
@@ -44,18 +61,21 @@ type Client struct {
 	OrganizationId string   `json:"organizationId"`
 	Active         bool     `json:"active"`
 	Secret         string   `json:"secret,omitempty"`
+	Links          []Link   `json:"links,omitempty"`
 }
 
-// FetchClientsResponse -
+// Fetch Clients Response -
 type FetchClientsResponse struct {
 	Content          []Client
-	PageSize         int  `json:"pageSize"`
-	PageNumber       int  `json:"pageNumber"`
-	TotalPages       int  `json:"totalPages"`
-	NumberOfElements int  `json:"numberOfElements"`
-	TotalElements    int  `json:"totalElements"`
-	FirstPage        bool `json:"firstPage"`
-	LastPage         bool `json:"lastPage"`
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
 }
 
 // User -
@@ -71,18 +91,21 @@ type User struct {
 	Username       string `json:"username"`
 	OrganizationId string `json:"organizationId"`
 	Active         bool   `json:"active"`
+	Links          []Link `json:"links,omitempty"`
 }
 
-// FetchUsersResponse -
+// Fetch Users Response -
 type FetchUsersResponse struct {
 	Content          []User
-	PageSize         int  `json:"pageSize"`
-	PageNumber       int  `json:"pageNumber"`
-	TotalPages       int  `json:"totalPages"`
-	NumberOfElements int  `json:"numberOfElements"`
-	TotalElements    int  `json:"totalElements"`
-	FirstPage        bool `json:"firstPage"`
-	LastPage         bool `json:"lastPage"`
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
 }
 
 // Git Account -
@@ -95,18 +118,22 @@ type GitAccount struct {
 	CreatedAt      string `json:"createdAt,omitempty"`
 	ModifiedAt     string `json:"modifiedAt,omitempty"`
 	OrganizationId string `json:"organizationId"`
+	Status         string `json:"status,omitempty"`
+	Links          []Link `json:"links,omitempty"`
 }
 
-// FetchGitAccountsResponse -
+// Fetch Git Accounts Response -
 type FetchGitAccountsResponse struct {
 	Content          []GitAccount
-	PageSize         int  `json:"pageSize"`
-	PageNumber       int  `json:"pageNumber"`
-	TotalPages       int  `json:"totalPages"`
-	NumberOfElements int  `json:"numberOfElements"`
-	TotalElements    int  `json:"totalElements"`
-	FirstPage        bool `json:"firstPage"`
-	LastPage         bool `json:"lastPage"`
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
 }
 
 // Git Repo -
@@ -119,18 +146,22 @@ type GitRepo struct {
 	CreatedAt      string `json:"createdAt,omitempty"`
 	ModifiedAt     string `json:"modifiedAt,omitempty"`
 	OrganizationId string `json:"organizationId"`
+	Status         string `json:"status,omitempty"`
+	Links          []Link `json:"links,omitempty"`
 }
 
-// FetchGitReposResponse -
+// Fetch Git Repos Response -
 type FetchGitReposResponse struct {
 	Content          []GitRepo
-	PageSize         int  `json:"pageSize"`
-	PageNumber       int  `json:"pageNumber"`
-	TotalPages       int  `json:"totalPages"`
-	NumberOfElements int  `json:"numberOfElements"`
-	TotalElements    int  `json:"totalElements"`
-	FirstPage        bool `json:"firstPage"`
-	LastPage         bool `json:"lastPage"`
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
 }
 
 // Git Repo Event -
@@ -145,18 +176,21 @@ type GitRepoEvent struct {
 	CreatedAt      string                 `json:"createdAt,omitempty"`
 	ModifiedAt     string                 `json:"modifiedAt,omitempty"`
 	OrganizationId string                 `json:"organizationId"`
+	Links          []Link                 `json:"links,omitempty"`
 }
 
-// FetchGitRepoEventsResponse -
+// Fetch Git Repo Events Response -
 type FetchGitRepoEventsResponse struct {
 	Content          []GitRepoEvent
-	PageSize         int  `json:"pageSize"`
-	PageNumber       int  `json:"pageNumber"`
-	TotalPages       int  `json:"totalPages"`
-	NumberOfElements int  `json:"numberOfElements"`
-	TotalElements    int  `json:"totalElements"`
-	FirstPage        bool `json:"firstPage"`
-	LastPage         bool `json:"lastPage"`
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
 }
 
 // Cloud Provider -
@@ -171,155 +205,207 @@ type CloudProvider struct {
 	CreatedAt      string `json:"createdAt,omitempty"`
 	ModifiedAt     string `json:"modifiedAt,omitempty"`
 	OrganizationId string `json:"organizationId"`
+	Status         string `json:"status,omitempty"`
+	Links          []Link `json:"links,omitempty"`
 }
 
-// FetchCloudProvidersResponse -
+// Fetch Cloud Providers Response -
 type FetchCloudProvidersResponse struct {
 	Content          []CloudProvider
-	PageSize         int  `json:"pageSize"`
-	PageNumber       int  `json:"pageNumber"`
-	TotalPages       int  `json:"totalPages"`
-	NumberOfElements int  `json:"numberOfElements"`
-	TotalElements    int  `json:"totalElements"`
-	FirstPage        bool `json:"firstPage"`
-	LastPage         bool `json:"lastPage"`
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
 }
 
-// VPC Pipelines
+// Continuous Integration Status -
+type ContinuousIntegrationStatus struct {
+	LatestDownExecutionStatus string `json:"latestDownExecutionStatus,omitempty"`
+	LatestUpExecutionStatus   string `json:"latestUpExecutionStatus,omitempty"`
+}
+
+// Pipeline Status -
+type PipelineStatus struct {
+	ContinuousIntegrationStatus ContinuousIntegrationStatus `json:"continuousIntegrationStatus,omitempty"`
+	InfrastructureStatus        string                      `json:"infrastructureStatus,omitempty"`
+}
+
+// VPC Pipelines -
 type VpcPipeline struct {
-	Type            string `json:"@type"`
-	ID              string `json:"id,omitempty"`
-	Name            string `json:"name"`
-	PipelineType    string `json:"pipelineType"`
-	CloudProviderId string `json:"cloudProviderId"`
-	OwningUserId    string `json:"owningUserId"`
-	CreatedAt       string `json:"createdAt,omitempty"`
-	ModifiedAt      string `json:"modifiedAt,omitempty"`
-	OrganizationId  string `json:"organizationId"`
+	Type            string         `json:"@type"`
+	ID              string         `json:"id,omitempty"`
+	Name            string         `json:"name"`
+	PipelineType    string         `json:"pipelineType"`
+	CloudProviderId string         `json:"cloudProviderId"`
+	OwningUserId    string         `json:"owningUserId"`
+	CreatedAt       string         `json:"createdAt,omitempty"`
+	ModifiedAt      string         `json:"modifiedAt,omitempty"`
+	OrganizationId  string         `json:"organizationId"`
+	Status          PipelineStatus `json:"status,omitempty"`
+	Links           []Link         `json:"links,omitempty"`
 }
 
-// FetchVpcPipelinesResponse -
+// Fetch VPC Pipelines Response -
 type FetchVpcPipelinesResponse struct {
 	Content          []VpcPipeline
-	PageSize         int  `json:"pageSize"`
-	PageNumber       int  `json:"pageNumber"`
-	TotalPages       int  `json:"totalPages"`
-	NumberOfElements int  `json:"numberOfElements"`
-	TotalElements    int  `json:"totalElements"`
-	FirstPage        bool `json:"firstPage"`
-	LastPage         bool `json:"lastPage"`
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
 }
 
-// K8s Pipelines
+// K8s Pipelines -
 type K8sPipeline struct {
-	Type           string `json:"@type"`
-	ID             string `json:"id,omitempty"`
-	Name           string `json:"name"`
-	PipelineType   string `json:"pipelineType"`
-	VpcPipelineId  string `json:"gazellePipelineId"`
-	OwningUserId   string `json:"owningUserId"`
-	CreatedAt      string `json:"createdAt,omitempty"`
-	ModifiedAt     string `json:"modifiedAt,omitempty"`
-	OrganizationId string `json:"organizationId"`
+	Type           string         `json:"@type"`
+	ID             string         `json:"id,omitempty"`
+	Name           string         `json:"name"`
+	PipelineType   string         `json:"pipelineType"`
+	VpcPipelineId  string         `json:"gazellePipelineId"`
+	OwningUserId   string         `json:"owningUserId"`
+	CreatedAt      string         `json:"createdAt,omitempty"`
+	ModifiedAt     string         `json:"modifiedAt,omitempty"`
+	OrganizationId string         `json:"organizationId"`
+	Status         PipelineStatus `json:"status,omitempty"`
+	Links          []Link         `json:"links,omitempty"`
 }
 
-// FetchK8sPipelinesResponse -
+// Fetch K8s Pipelines Response -
 type FetchK8sPipelinesResponse struct {
 	Content          []K8sPipeline
-	PageSize         int  `json:"pageSize"`
-	PageNumber       int  `json:"pageNumber"`
-	TotalPages       int  `json:"totalPages"`
-	NumberOfElements int  `json:"numberOfElements"`
-	TotalElements    int  `json:"totalElements"`
-	FirstPage        bool `json:"firstPage"`
-	LastPage         bool `json:"lastPage"`
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
 }
 
-// Stage
-type Stage struct {
-	Name string `json:"name"`
+// WordPress Stage -
+type WordPressStage struct {
+	Name    string `json:"name"`
+	Links   []Link `json:"links,omitempty"`
+	SiteUrl string `json:"siteUrl,omitempty"`
 }
 
-// WordPress Pipelines
+// WordPress Pipelines -
 type WordPressPipeline struct {
-	Type           string  `json:"@type"`
-	ID             string  `json:"id,omitempty"`
-	Name           string  `json:"name"`
-	PipelineType   string  `json:"pipelineType"`
-	K8sPipelineId  string  `json:"gazellePipelineId"`
-	GitRepoId      string  `json:"gitRepoId"`
-	Branch         string  `json:"branch"`
-	Stages         []Stage `json:"stages"`
-	OwningUserId   string  `json:"owningUserId"`
-	CreatedAt      string  `json:"createdAt,omitempty"`
-	ModifiedAt     string  `json:"modifiedAt,omitempty"`
-	OrganizationId string  `json:"organizationId"`
+	Type           string           `json:"@type"`
+	ID             string           `json:"id,omitempty"`
+	Name           string           `json:"name"`
+	PipelineType   string           `json:"pipelineType"`
+	K8sPipelineId  string           `json:"gazellePipelineId"`
+	GitRepoId      string           `json:"gitRepoId"`
+	Branch         string           `json:"branch"`
+	Stages         []WordPressStage `json:"stages"`
+	OwningUserId   string           `json:"owningUserId"`
+	CreatedAt      string           `json:"createdAt,omitempty"`
+	ModifiedAt     string           `json:"modifiedAt,omitempty"`
+	OrganizationId string           `json:"organizationId"`
+	Status         PipelineStatus   `json:"status,omitempty"`
+	Links          []Link           `json:"links,omitempty"`
 }
 
-// FetchWordPressPipelinesResponse -
+// Fetch WordPress Pipelines Response -
 type FetchWordPressPipelinesResponse struct {
 	Content          []WordPressPipeline
-	PageSize         int  `json:"pageSize"`
-	PageNumber       int  `json:"pageNumber"`
-	TotalPages       int  `json:"totalPages"`
-	NumberOfElements int  `json:"numberOfElements"`
-	TotalElements    int  `json:"totalElements"`
-	FirstPage        bool `json:"firstPage"`
-	LastPage         bool `json:"lastPage"`
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
 }
 
-// Static Content Pipelines
+// Static Content Stage -
+type StaticContentStage struct {
+	Name    string `json:"name"`
+	Links   []Link `json:"links,omitempty"`
+	SiteUrl string `json:"siteUrl,omitempty"`
+}
+
+// Static Content Pipelines -
 type StaticContentPipeline struct {
-	Type            string  `json:"@type"`
-	ID              string  `json:"id,omitempty"`
-	Name            string  `json:"name"`
-	PipelineType    string  `json:"pipelineType"`
-	CloudProviderId string  `json:"cloudProviderId"`
-	GitRepoId       string  `json:"gitRepoId"`
-	Branch          string  `json:"branch"`
-	Stages          []Stage `json:"stages"`
-	OwningUserId    string  `json:"owningUserId"`
-	CreatedAt       string  `json:"createdAt,omitempty"`
-	ModifiedAt      string  `json:"modifiedAt,omitempty"`
-	OrganizationId  string  `json:"organizationId"`
+	Type            string               `json:"@type"`
+	ID              string               `json:"id,omitempty"`
+	Name            string               `json:"name"`
+	PipelineType    string               `json:"pipelineType"`
+	CloudProviderId string               `json:"cloudProviderId"`
+	GitRepoId       string               `json:"gitRepoId"`
+	Branch          string               `json:"branch"`
+	Stages          []StaticContentStage `json:"stages"`
+	OwningUserId    string               `json:"owningUserId"`
+	CreatedAt       string               `json:"createdAt,omitempty"`
+	ModifiedAt      string               `json:"modifiedAt,omitempty"`
+	OrganizationId  string               `json:"organizationId"`
+	Status          PipelineStatus       `json:"status,omitempty"`
+	Links           []Link               `json:"links,omitempty"`
 }
 
-// FetchStaticContentPipelinesResponse -
+// Fetch Static Content Pipelines Response -
 type FetchStaticContentPipelinesResponse struct {
 	Content          []StaticContentPipeline
-	PageSize         int  `json:"pageSize"`
-	PageNumber       int  `json:"pageNumber"`
-	TotalPages       int  `json:"totalPages"`
-	NumberOfElements int  `json:"numberOfElements"`
-	TotalElements    int  `json:"totalElements"`
-	FirstPage        bool `json:"firstPage"`
-	LastPage         bool `json:"lastPage"`
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
 }
 
-// Api Pipelines
+// API Stage -
+type ApiStage struct {
+	Name       string `json:"name"`
+	Links      []Link `json:"links,omitempty"`
+	ApiBaseUrl string `json:"apiBaseUrl,omitempty"`
+}
+
+// API Pipelines -
 type ApiPipeline struct {
-	Type           string  `json:"@type"`
-	ID             string  `json:"id,omitempty"`
-	Name           string  `json:"name"`
-	PipelineType   string  `json:"pipelineType"`
-	VpcPipelineId  string  `json:"gazellePipelineId"`
-	GitRepoId      string  `json:"gitRepoId"`
-	Branch         string  `json:"branch"`
-	Stages         []Stage `json:"stages"`
-	OwningUserId   string  `json:"owningUserId"`
-	CreatedAt      string  `json:"createdAt,omitempty"`
-	ModifiedAt     string  `json:"modifiedAt,omitempty"`
-	OrganizationId string  `json:"organizationId"`
+	Type           string         `json:"@type"`
+	ID             string         `json:"id,omitempty"`
+	Name           string         `json:"name"`
+	PipelineType   string         `json:"pipelineType"`
+	VpcPipelineId  string         `json:"gazellePipelineId"`
+	GitRepoId      string         `json:"gitRepoId"`
+	Branch         string         `json:"branch"`
+	Stages         []ApiStage     `json:"stages"`
+	OwningUserId   string         `json:"owningUserId"`
+	CreatedAt      string         `json:"createdAt,omitempty"`
+	ModifiedAt     string         `json:"modifiedAt,omitempty"`
+	OrganizationId string         `json:"organizationId"`
+	Status         PipelineStatus `json:"status,omitempty"`
+	Links          []Link         `json:"links,omitempty"`
 }
 
-// FetchApiPipelinesResponse -
+// Fetch API Pipelines Response -
 type FetchApiPipelinesResponse struct {
 	Content          []ApiPipeline
-	PageSize         int  `json:"pageSize"`
-	PageNumber       int  `json:"pageNumber"`
-	TotalPages       int  `json:"totalPages"`
-	NumberOfElements int  `json:"numberOfElements"`
-	TotalElements    int  `json:"totalElements"`
-	FirstPage        bool `json:"firstPage"`
-	LastPage         bool `json:"lastPage"`
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
 }
