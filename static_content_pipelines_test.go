@@ -322,3 +322,203 @@ func Test__DeleteStaticContentPipeline__When_doNoContentRequest_Fails(t *testing
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
 }
+
+func Test__CreateStaticContentPipelineEvent__Happy_Path(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	m := NewMockIHttpClient(ctrl)
+
+	organizationId := buildTestId()
+	pipelineEvent := buildTestPipelineEvent()
+	location := gofakeit.URL()
+
+	r := ioutil.NopCloser(bytes.NewReader([]byte("")))
+	m.EXPECT().Do(gomock.Any()).Return(&http.Response{
+		StatusCode: http.StatusCreated,
+		Body:       r,
+		Header:     map[string][]string{"Location": {location}},
+	}, nil)
+
+	xc := XilutionClient{
+		HttpClient: m,
+		Token:      buildJwtToken(),
+	}
+
+	resp, err := xc.CreateStaticContentPipelineEvent(&organizationId, &pipelineEvent)
+
+	assert.NotNil(t, resp)
+	assert.Nil(t, err)
+	assert.EqualValues(t, location, *resp)
+}
+
+func Test__CreateStaticContentPipelineEvent__When_doCreateRequest_Fails(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	m := NewMockIHttpClient(ctrl)
+
+	organizationId := buildTestId()
+	apiPipeline := buildTestPipelineEvent()
+
+	errMsg := gofakeit.Sentence(10)
+	json := fmt.Sprintf(`{"message": "%s"}`, errMsg)
+	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
+	m.EXPECT().Do(gomock.Any()).Return(&http.Response{
+		StatusCode: 500,
+		Body:       r,
+	}, nil)
+
+	xc := XilutionClient{
+		HttpClient: m,
+		Token:      buildJwtToken(),
+	}
+
+	resp, err := xc.CreateStaticContentPipelineEvent(&organizationId, &apiPipeline)
+
+	assert.Nil(t, resp)
+	assert.NotNil(t, err)
+	assert.EqualValues(t, errMsg, err.Error())
+}
+
+func Test__GetStaticContentPipelineEvent__Happy_Path(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	m := NewMockIHttpClient(ctrl)
+
+	organizationId := buildTestId()
+	apiPipeline := buildTestPipelineEvent()
+
+	json, _ := json.Marshal(&apiPipeline)
+	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
+	m.EXPECT().Do(gomock.Any()).Return(&http.Response{
+		StatusCode: http.StatusOK,
+		Body:       r,
+	}, nil)
+
+	xc := XilutionClient{
+		HttpClient: m,
+		Token:      buildJwtToken(),
+	}
+
+	resp, err := xc.GetStaticContentPipelineEvent(&organizationId, &apiPipeline.ID)
+
+	assert.NotNil(t, resp)
+	assert.Nil(t, err)
+	assert.EqualValues(t, &apiPipeline, resp)
+}
+
+func Test__GetStaticContentPipelineEvent__When_doGetRequest_Fails(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	m := NewMockIHttpClient(ctrl)
+
+	organizationId := buildTestId()
+	apiPipeline := buildTestPipelineEvent()
+
+	errMsg := gofakeit.Sentence(10)
+	json := fmt.Sprintf(`{"message": "%s"}`, errMsg)
+	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
+	m.EXPECT().Do(gomock.Any()).Return(&http.Response{
+		StatusCode: 500,
+		Body:       r,
+	}, nil)
+
+	xc := XilutionClient{
+		HttpClient: m,
+		Token:      buildJwtToken(),
+	}
+
+	resp, err := xc.GetStaticContentPipelineEvent(&organizationId, &apiPipeline.ID)
+
+	assert.Nil(t, resp)
+	assert.NotNil(t, err)
+	assert.EqualValues(t, errMsg, err.Error())
+}
+
+func Test__GetStaticContentPipelineEventsEvent__Happy_Path(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	m := NewMockIHttpClient(ctrl)
+
+	organizationId := buildTestId()
+	pipelineEvents := []PipelineEvent{
+		buildTestPipelineEvent(),
+		buildTestPipelineEvent(),
+		buildTestPipelineEvent(),
+	}
+	pageSize := gofakeit.Number(0, 100)
+	pageNumber := gofakeit.Number(0, 500)
+	totalPages := gofakeit.Number(0, 500)
+	numberOfElements := gofakeit.Number(0, 500)
+	totalElements := gofakeit.Number(0, 500)
+	firstPage := gofakeit.Bool()
+	lastPage := gofakeit.Bool()
+	fetchStaticContentPipelineEventsResponse := FetchPipelineEventsResponse{
+		Content:          pipelineEvents,
+		PageSize:         pageSize,
+		PageNumber:       pageNumber,
+		TotalPages:       totalPages,
+		NumberOfElements: numberOfElements,
+		TotalElements:    totalElements,
+		FirstPage:        firstPage,
+		LastPage:         lastPage,
+	}
+
+	json, _ := json.Marshal(&fetchStaticContentPipelineEventsResponse)
+	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
+	m.EXPECT().Do(gomock.Any()).Return(&http.Response{
+		StatusCode: http.StatusOK,
+		Body:       r,
+	}, nil)
+
+	xc := XilutionClient{
+		HttpClient: m,
+		Token:      buildJwtToken(),
+	}
+
+	resp, err := xc.GetStaticContentPipelineEvents(&organizationId, &pageSize, &pageNumber)
+
+	assert.NotNil(t, resp)
+	assert.Nil(t, err)
+	assert.EqualValues(t, &fetchStaticContentPipelineEventsResponse, resp)
+}
+
+func Test__GetStaticContentPipelineEventsEvent__When_doGetRequest_Fails(t *testing.T) {
+	ctrl := gomock.NewController(t)
+
+	defer ctrl.Finish()
+
+	m := NewMockIHttpClient(ctrl)
+
+	organizationId := buildTestId()
+	pageSize := gofakeit.Number(0, 100)
+	pageNumber := gofakeit.Number(0, 500)
+
+	errMsg := gofakeit.Sentence(10)
+	json := fmt.Sprintf(`{"message": "%s"}`, errMsg)
+	r := ioutil.NopCloser(bytes.NewReader([]byte(json)))
+	m.EXPECT().Do(gomock.Any()).Return(&http.Response{
+		StatusCode: 500,
+		Body:       r,
+	}, nil)
+
+	xc := XilutionClient{
+		HttpClient: m,
+		Token:      buildJwtToken(),
+	}
+
+	resp, err := xc.GetStaticContentPipelineEvents(&organizationId, &pageSize, &pageNumber)
+
+	assert.Nil(t, resp)
+	assert.NotNil(t, err)
+	assert.EqualValues(t, errMsg, err.Error())
+}

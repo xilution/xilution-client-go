@@ -233,3 +233,16 @@ func buildTestApiPipeline() ApiPipeline {
 		OrganizationId: buildTestId(),
 	}
 }
+
+func buildTestPipelineEvent() PipelineEvent {
+	return PipelineEvent{
+		Type:           "pipeline",
+		ID:             buildTestId(),
+		PipelineId:     buildTestId(),
+		EventType:      gofakeit.Word(),
+		OwningUserId:   buildTestId(),
+		CreatedAt:      gofakeit.Date().Format(time.RFC3339),
+		ModifiedAt:     gofakeit.Date().Format(time.RFC3339),
+		OrganizationId: buildTestId(),
+	}
+}

@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-func (xc *XilutionClient) CreateApiPipeline(organizationId *string, client *ApiPipeline) (*string, error) {
-	rb, _ := json.Marshal(client)
+func (xc *XilutionClient) CreateApiPipeline(organizationId *string, api *ApiPipeline) (*string, error) {
+	rb, _ := json.Marshal(api)
 
 	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipelines", FoxBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
@@ -20,18 +20,18 @@ func (xc *XilutionClient) CreateApiPipeline(organizationId *string, client *ApiP
 	return location, nil
 }
 
-func (xc *XilutionClient) GetApiPipeline(organizationId *string, clientId *string) (*ApiPipeline, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines/%s", FoxBaseUrl, *organizationId, *clientId), nil)
+func (xc *XilutionClient) GetApiPipeline(organizationId *string, apiId *string) (*ApiPipeline, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines/%s", FoxBaseUrl, *organizationId, *apiId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
 		return nil, err
 	}
 
-	client := ApiPipeline{}
-	json.Unmarshal(body, &client)
+	api := ApiPipeline{}
+	json.Unmarshal(body, &api)
 
-	return &client, nil
+	return &api, nil
 }
 
 func (xc *XilutionClient) GetApiPipelines(organizationId *string, pageSize, pageNumber *int) (*FetchApiPipelinesResponse, error) {
@@ -48,10 +48,10 @@ func (xc *XilutionClient) GetApiPipelines(organizationId *string, pageSize, page
 	return &fetchApiPipelinesResponse, nil
 }
 
-func (xc *XilutionClient) UpdateApiPipeline(organizationId *string, client *ApiPipeline) error {
-	rb, _ := json.Marshal(client)
+func (xc *XilutionClient) UpdateApiPipeline(organizationId *string, api *ApiPipeline) error {
+	rb, _ := json.Marshal(api)
 
-	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/pipelines/%s", FoxBaseUrl, *organizationId, client.ID), strings.NewReader(string(rb)))
+	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/pipelines/%s", FoxBaseUrl, *organizationId, api.ID), strings.NewReader(string(rb)))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -61,8 +61,8 @@ func (xc *XilutionClient) UpdateApiPipeline(organizationId *string, client *ApiP
 	return nil
 }
 
-func (xc *XilutionClient) DeleteApiPipeline(organizationId *string, clientId *string) error {
-	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/pipelines/%s", FoxBaseUrl, *organizationId, *clientId), strings.NewReader(string("")))
+func (xc *XilutionClient) DeleteApiPipeline(organizationId *string, apiId *string) error {
+	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/pipelines/%s", FoxBaseUrl, *organizationId, *apiId), strings.NewReader(string("")))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -70,4 +70,45 @@ func (xc *XilutionClient) DeleteApiPipeline(organizationId *string, clientId *st
 	}
 
 	return nil
+}
+
+func (xc *XilutionClient) CreateApiPipelineEvent(organizationId *string, pipelineEvent *PipelineEvent) (*string, error) {
+	rb, _ := json.Marshal(pipelineEvent)
+
+	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipeline-events", GazelleBaseUrl, *organizationId), strings.NewReader(string(rb)))
+
+	location, err := xc.doCreateRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return location, nil
+}
+
+func (xc *XilutionClient) GetApiPipelineEvent(organizationId *string, pipelineEventId *string) (*PipelineEvent, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events/%s", GazelleBaseUrl, *organizationId, *pipelineEventId), nil)
+
+	body, err := xc.doGetRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	pipelineEvent := PipelineEvent{}
+	json.Unmarshal(body, &pipelineEvent)
+
+	return &pipelineEvent, nil
+}
+
+func (xc *XilutionClient) GetApiPipelineEvents(organizationId *string, pageSize, pageNumber *int) (*FetchPipelineEventsResponse, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events?pageSize=%d&pageNumber=%d", GazelleBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
+
+	body, err := xc.doGetRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	fetchPipelineEventsResponse := FetchPipelineEventsResponse{}
+	json.Unmarshal(body, &fetchPipelineEventsResponse)
+
+	return &fetchPipelineEventsResponse, nil
 }

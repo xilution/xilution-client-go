@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-func (xc *XilutionClient) CreateStaticContentPipeline(organizationId *string, client *StaticContentPipeline) (*string, error) {
-	rb, _ := json.Marshal(client)
+func (xc *XilutionClient) CreateStaticContentPipeline(organizationId *string, staticContent *StaticContentPipeline) (*string, error) {
+	rb, _ := json.Marshal(staticContent)
 
 	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipelines", CoyoteBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
@@ -20,18 +20,18 @@ func (xc *XilutionClient) CreateStaticContentPipeline(organizationId *string, cl
 	return location, nil
 }
 
-func (xc *XilutionClient) GetStaticContentPipeline(organizationId *string, clientId *string) (*StaticContentPipeline, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines/%s", CoyoteBaseUrl, *organizationId, *clientId), nil)
+func (xc *XilutionClient) GetStaticContentPipeline(organizationId *string, staticContentId *string) (*StaticContentPipeline, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines/%s", CoyoteBaseUrl, *organizationId, *staticContentId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
 		return nil, err
 	}
 
-	client := StaticContentPipeline{}
-	json.Unmarshal(body, &client)
+	staticContent := StaticContentPipeline{}
+	json.Unmarshal(body, &staticContent)
 
-	return &client, nil
+	return &staticContent, nil
 }
 
 func (xc *XilutionClient) GetStaticContentPipelines(organizationId *string, pageSize, pageNumber *int) (*FetchStaticContentPipelinesResponse, error) {
@@ -48,10 +48,10 @@ func (xc *XilutionClient) GetStaticContentPipelines(organizationId *string, page
 	return &fetchStaticContentPipelinesResponse, nil
 }
 
-func (xc *XilutionClient) UpdateStaticContentPipeline(organizationId *string, client *StaticContentPipeline) error {
-	rb, _ := json.Marshal(client)
+func (xc *XilutionClient) UpdateStaticContentPipeline(organizationId *string, staticContent *StaticContentPipeline) error {
+	rb, _ := json.Marshal(staticContent)
 
-	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/pipelines/%s", CoyoteBaseUrl, *organizationId, client.ID), strings.NewReader(string(rb)))
+	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/pipelines/%s", CoyoteBaseUrl, *organizationId, staticContent.ID), strings.NewReader(string(rb)))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -61,8 +61,8 @@ func (xc *XilutionClient) UpdateStaticContentPipeline(organizationId *string, cl
 	return nil
 }
 
-func (xc *XilutionClient) DeleteStaticContentPipeline(organizationId *string, clientId *string) error {
-	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/pipelines/%s", CoyoteBaseUrl, *organizationId, *clientId), strings.NewReader(string("")))
+func (xc *XilutionClient) DeleteStaticContentPipeline(organizationId *string, staticContentId *string) error {
+	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/pipelines/%s", CoyoteBaseUrl, *organizationId, *staticContentId), strings.NewReader(string("")))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -70,4 +70,45 @@ func (xc *XilutionClient) DeleteStaticContentPipeline(organizationId *string, cl
 	}
 
 	return nil
+}
+
+func (xc *XilutionClient) CreateStaticContentPipelineEvent(organizationId *string, pipelineEvent *PipelineEvent) (*string, error) {
+	rb, _ := json.Marshal(pipelineEvent)
+
+	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipeline-events", GazelleBaseUrl, *organizationId), strings.NewReader(string(rb)))
+
+	location, err := xc.doCreateRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return location, nil
+}
+
+func (xc *XilutionClient) GetStaticContentPipelineEvent(organizationId *string, pipelineEventId *string) (*PipelineEvent, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events/%s", GazelleBaseUrl, *organizationId, *pipelineEventId), nil)
+
+	body, err := xc.doGetRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	pipelineEvent := PipelineEvent{}
+	json.Unmarshal(body, &pipelineEvent)
+
+	return &pipelineEvent, nil
+}
+
+func (xc *XilutionClient) GetStaticContentPipelineEvents(organizationId *string, pageSize, pageNumber *int) (*FetchPipelineEventsResponse, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events?pageSize=%d&pageNumber=%d", GazelleBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
+
+	body, err := xc.doGetRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	fetchPipelineEventsResponse := FetchPipelineEventsResponse{}
+	json.Unmarshal(body, &fetchPipelineEventsResponse)
+
+	return &fetchPipelineEventsResponse, nil
 }

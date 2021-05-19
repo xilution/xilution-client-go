@@ -409,3 +409,31 @@ type FetchApiPipelinesResponse struct {
 	ID               Link   `json:"link"`
 	Links            []Link `json:"links,omitempty"`
 }
+
+// Pipeline Event -
+type PipelineEvent struct {
+	Type           string                 `json:"@type"`
+	ID             string                 `json:"id,omitempty"`
+	OrganizationId string                 `json:"organizationId"`
+	PipelineId     string                 `json:"pipelineId"`
+	EventType      string                 `json:"eventType"`
+	Parameters     map[string]interface{} `json:"parameters,omitempty"`
+	OwningUserId   string                 `json:"owningUserId"`
+	CreatedAt      string                 `json:"createdAt,omitempty"`
+	ModifiedAt     string                 `json:"modifiedAt,omitempty"`
+	Links          []Link                 `json:"links,omitempty"`
+}
+
+// Fetch Pipeline Events Response -
+type FetchPipelineEventsResponse struct {
+	Content          []PipelineEvent
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
+}
