@@ -72,10 +72,10 @@ func (xc *XilutionClient) DeleteGitAccount(organizationId *string, gitAccountId 
 	return nil
 }
 
-func (xc *XilutionClient) CreateGitRepo(organizationId, gitAccountId *string, gitRepo *GitRepo) (*string, error) {
+func (xc *XilutionClient) CreateGitRepo(organizationId *string, gitRepo *GitRepo) (*string, error) {
 	rb, _ := json.Marshal(gitRepo)
 
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-accounts/%s/git-repos", SwanBaseUrl, *organizationId, *gitAccountId), strings.NewReader(string(rb)))
+	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-repos", SwanBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -85,8 +85,8 @@ func (xc *XilutionClient) CreateGitRepo(organizationId, gitAccountId *string, gi
 	return location, nil
 }
 
-func (xc *XilutionClient) GetGitRepo(organizationId, gitAccountId, gitRepoId *string) (*GitRepo, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-accounts/%s/git-repos/%s", SwanBaseUrl, *organizationId, *gitAccountId, *gitRepoId), nil)
+func (xc *XilutionClient) GetGitRepo(organizationId, gitRepoId *string) (*GitRepo, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-repos/%s", SwanBaseUrl, *organizationId, *gitRepoId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -99,8 +99,8 @@ func (xc *XilutionClient) GetGitRepo(organizationId, gitAccountId, gitRepoId *st
 	return &gitRepo, nil
 }
 
-func (xc *XilutionClient) GetGitRepos(organizationId, gitAccountId *string, pageSize, pageNumber *int) (*FetchGitReposResponse, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-accounts/%s/git-repos?pageSize=%d&pageNumber=%d", SwanBaseUrl, *organizationId, *gitAccountId, *pageSize, *pageNumber), nil)
+func (xc *XilutionClient) GetGitRepos(organizationId *string, pageSize, pageNumber *int) (*FetchGitReposResponse, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-repos?pageSize=%d&pageNumber=%d", SwanBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -113,10 +113,10 @@ func (xc *XilutionClient) GetGitRepos(organizationId, gitAccountId *string, page
 	return &fetchGitReposResponse, nil
 }
 
-func (xc *XilutionClient) UpdateGitRepo(organizationId, gitAccountId *string, gitRepo *GitRepo) error {
+func (xc *XilutionClient) UpdateGitRepo(organizationId *string, gitRepo *GitRepo) error {
 	rb, _ := json.Marshal(gitRepo)
 
-	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/git-accounts/%s/git-repos/%s", SwanBaseUrl, *organizationId, *gitAccountId, gitRepo.ID), strings.NewReader(string(rb)))
+	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/git-repos/%s", SwanBaseUrl, *organizationId, gitRepo.ID), strings.NewReader(string(rb)))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -126,8 +126,8 @@ func (xc *XilutionClient) UpdateGitRepo(organizationId, gitAccountId *string, gi
 	return nil
 }
 
-func (xc *XilutionClient) DeleteGitRepo(organizationId, gitAccountId, gitRepoId *string) error {
-	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/git-accounts/%s/git-repos/%s", SwanBaseUrl, *organizationId, *gitAccountId, *gitRepoId), strings.NewReader(string("")))
+func (xc *XilutionClient) DeleteGitRepo(organizationId, gitRepoId *string) error {
+	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/git-repos/%s", SwanBaseUrl, *organizationId, *gitRepoId), strings.NewReader(string("")))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -137,10 +137,10 @@ func (xc *XilutionClient) DeleteGitRepo(organizationId, gitAccountId, gitRepoId 
 	return nil
 }
 
-func (xc *XilutionClient) CreateGitRepoEvent(organizationId, gitAccountId, gitRepoId *string, gitRepoEvent *GitRepoEvent) (*string, error) {
+func (xc *XilutionClient) CreateGitRepoEvent(organizationId *string, gitRepoEvent *GitRepoEvent) (*string, error) {
 	rb, _ := json.Marshal(gitRepoEvent)
 
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-accounts/%s/git-repos/%s/events", SwanBaseUrl, *organizationId, *gitAccountId, *gitRepoId), strings.NewReader(string(rb)))
+	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-repo-events", SwanBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -150,8 +150,8 @@ func (xc *XilutionClient) CreateGitRepoEvent(organizationId, gitAccountId, gitRe
 	return location, nil
 }
 
-func (xc *XilutionClient) GetGitRepoEvent(organizationId, gitAccountId, gitRepoId, eventId *string) (*GitRepoEvent, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-accounts/%s/git-repos/%s/events/%s", SwanBaseUrl, *organizationId, *gitAccountId, *gitRepoId, *eventId), nil)
+func (xc *XilutionClient) GetGitRepoEvent(organizationId, eventId *string) (*GitRepoEvent, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-repo-events/%s", SwanBaseUrl, *organizationId, *eventId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -164,8 +164,8 @@ func (xc *XilutionClient) GetGitRepoEvent(organizationId, gitAccountId, gitRepoI
 	return &gitRepoEvent, nil
 }
 
-func (xc *XilutionClient) GetGitRepoEvents(organizationId, gitAccountId, gitRepoId *string, pageSize, pageNumber *int) (*FetchGitRepoEventsResponse, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-accounts/%s/git-repos/%s/events?pageSize=%d&pageNumber=%d", SwanBaseUrl, *organizationId, *gitAccountId, *gitRepoId, *pageSize, *pageNumber), nil)
+func (xc *XilutionClient) GetGitRepoEvents(organizationId *string, pageSize, pageNumber *int) (*FetchGitRepoEventsResponse, error) {
+	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-repo-events?pageSize=%d&pageNumber=%d", SwanBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {

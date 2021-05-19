@@ -331,7 +331,6 @@ func Test__CreateGitRepo__Happy_Path(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
 	gitRepo := buildTestGitRepo()
 	location := gofakeit.URL()
 
@@ -347,7 +346,7 @@ func Test__CreateGitRepo__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateGitRepo(&organizationId, &gitAccountId, &gitRepo)
+	resp, err := xc.CreateGitRepo(&organizationId, &gitRepo)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -362,7 +361,6 @@ func Test__CreateGitRepo__When_doCreateRequest_Fails(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
 	gitRepo := buildTestGitRepo()
 
 	errMsg := gofakeit.Sentence(10)
@@ -378,7 +376,7 @@ func Test__CreateGitRepo__When_doCreateRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateGitRepo(&organizationId, &gitAccountId, &gitRepo)
+	resp, err := xc.CreateGitRepo(&organizationId, &gitRepo)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -393,7 +391,6 @@ func Test__GetGitRepo__Happy_Path(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
 	gitRepo := buildTestGitRepo()
 
 	json, _ := json.Marshal(&gitRepo)
@@ -408,7 +405,7 @@ func Test__GetGitRepo__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetGitRepo(&organizationId, &gitAccountId, &gitRepo.ID)
+	resp, err := xc.GetGitRepo(&organizationId, &gitRepo.ID)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -423,7 +420,6 @@ func Test__GetGitRepo__When_doGetRequest_Fails(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
 	gitRepo := buildTestGitRepo()
 
 	errMsg := gofakeit.Sentence(10)
@@ -439,7 +435,7 @@ func Test__GetGitRepo__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetGitRepo(&organizationId, &gitAccountId, &gitRepo.ID)
+	resp, err := xc.GetGitRepo(&organizationId, &gitRepo.ID)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -454,7 +450,6 @@ func Test__GetGitRepos__Happy_Path(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
 	gitRepos := []GitRepo{
 		buildTestGitRepo(),
 		buildTestGitRepo(),
@@ -490,7 +485,7 @@ func Test__GetGitRepos__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetGitRepos(&organizationId, &gitAccountId, &pageSize, &pageNumber)
+	resp, err := xc.GetGitRepos(&organizationId, &pageSize, &pageNumber)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -505,7 +500,6 @@ func Test__GetGitRepos__When_doGetRequest_Fails(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
 	pageSize := gofakeit.Number(0, 100)
 	pageNumber := gofakeit.Number(0, 500)
 
@@ -522,7 +516,7 @@ func Test__GetGitRepos__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetGitRepos(&organizationId, &gitAccountId, &pageSize, &pageNumber)
+	resp, err := xc.GetGitRepos(&organizationId, &pageSize, &pageNumber)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -537,7 +531,6 @@ func Test__UpdateGitRepo__Happy_Path(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
 	gitRepo := buildTestGitRepo()
 
 	r := ioutil.NopCloser(bytes.NewReader([]byte("")))
@@ -551,7 +544,7 @@ func Test__UpdateGitRepo__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateGitRepo(&organizationId, &gitAccountId, &gitRepo)
+	err := xc.UpdateGitRepo(&organizationId, &gitRepo)
 
 	assert.Nil(t, err)
 }
@@ -564,7 +557,6 @@ func Test__UpdateGitRepo__When_doNoContentRequest_Fails(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
 	gitRepo := buildTestGitRepo()
 
 	errMsg := gofakeit.Sentence(10)
@@ -580,7 +572,7 @@ func Test__UpdateGitRepo__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.UpdateGitRepo(&organizationId, &gitAccountId, &gitRepo)
+	err := xc.UpdateGitRepo(&organizationId, &gitRepo)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
@@ -594,7 +586,6 @@ func Test__DeleteGitRepo__Happy_Path(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
 	gitRepoId := buildTestId()
 
 	r := ioutil.NopCloser(bytes.NewReader([]byte("")))
@@ -608,7 +599,7 @@ func Test__DeleteGitRepo__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteGitRepo(&organizationId, &gitAccountId, &gitRepoId)
+	err := xc.DeleteGitRepo(&organizationId, &gitRepoId)
 
 	assert.Nil(t, err)
 }
@@ -621,7 +612,6 @@ func Test__DeleteGitRepo__When_doNoContentRequest_Fails(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
 	gitRepoId := buildTestId()
 
 	errMsg := gofakeit.Sentence(10)
@@ -637,7 +627,7 @@ func Test__DeleteGitRepo__When_doNoContentRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	err := xc.DeleteGitRepo(&organizationId, &gitAccountId, &gitRepoId)
+	err := xc.DeleteGitRepo(&organizationId, &gitRepoId)
 
 	assert.NotNil(t, err)
 	assert.EqualValues(t, errMsg, err.Error())
@@ -651,8 +641,6 @@ func Test__CreateGitRepoEvent__Happy_Path(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
-	gitRepoId := buildTestId()
 	gitRepoEvent := buildTestGitRepoEvent()
 	location := gofakeit.URL()
 
@@ -668,7 +656,7 @@ func Test__CreateGitRepoEvent__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateGitRepoEvent(&organizationId, &gitAccountId, &gitRepoId, &gitRepoEvent)
+	resp, err := xc.CreateGitRepoEvent(&organizationId, &gitRepoEvent)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -683,8 +671,6 @@ func Test__CreateGitRepoEvent__When_doCreateRequest_Fails(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
-	gitRepoId := buildTestId()
 	gitRepoEvent := buildTestGitRepoEvent()
 
 	errMsg := gofakeit.Sentence(10)
@@ -700,7 +686,7 @@ func Test__CreateGitRepoEvent__When_doCreateRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.CreateGitRepoEvent(&organizationId, &gitAccountId, &gitRepoId, &gitRepoEvent)
+	resp, err := xc.CreateGitRepoEvent(&organizationId, &gitRepoEvent)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -715,8 +701,6 @@ func Test__GetGitRepoEvent__Happy_Path(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
-	gitRepoId := buildTestId()
 	gitRepoEvent := buildTestGitRepoEvent()
 
 	json, _ := json.Marshal(&gitRepoEvent)
@@ -731,7 +715,7 @@ func Test__GetGitRepoEvent__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetGitRepoEvent(&organizationId, &gitAccountId, &gitRepoId, &gitRepoEvent.ID)
+	resp, err := xc.GetGitRepoEvent(&organizationId, &gitRepoEvent.ID)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -746,8 +730,6 @@ func Test__GetGitRepoEvent__When_doGetRequest_Fails(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
-	gitRepoId := buildTestId()
 	gitRepoEvent := buildTestGitRepoEvent()
 
 	errMsg := gofakeit.Sentence(10)
@@ -763,7 +745,7 @@ func Test__GetGitRepoEvent__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetGitRepoEvent(&organizationId, &gitAccountId, &gitRepoId, &gitRepoEvent.ID)
+	resp, err := xc.GetGitRepoEvent(&organizationId, &gitRepoEvent.ID)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -778,8 +760,6 @@ func Test__GetGitRepoEvents__Happy_Path(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
-	gitRepoId := buildTestId()
 	gitRepoEvents := []GitRepoEvent{
 		buildTestGitRepoEvent(),
 		buildTestGitRepoEvent(),
@@ -815,7 +795,7 @@ func Test__GetGitRepoEvents__Happy_Path(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetGitRepoEvents(&organizationId, &gitAccountId, &gitRepoId, &pageSize, &pageNumber)
+	resp, err := xc.GetGitRepoEvents(&organizationId, &pageSize, &pageNumber)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
@@ -830,8 +810,6 @@ func Test__GetGitRepoEvents__When_doGetRequest_Fails(t *testing.T) {
 	m := NewMockIHttpClient(ctrl)
 
 	organizationId := buildTestId()
-	gitAccountId := buildTestId()
-	gitRepoId := buildTestId()
 	pageSize := gofakeit.Number(0, 100)
 	pageNumber := gofakeit.Number(0, 500)
 
@@ -848,7 +826,7 @@ func Test__GetGitRepoEvents__When_doGetRequest_Fails(t *testing.T) {
 		Token:      buildJwtToken(),
 	}
 
-	resp, err := xc.GetGitRepoEvents(&organizationId, &gitAccountId, &gitRepoId, &pageSize, &pageNumber)
+	resp, err := xc.GetGitRepoEvents(&organizationId, &pageSize, &pageNumber)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
