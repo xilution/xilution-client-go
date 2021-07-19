@@ -43,10 +43,8 @@ func init() {
 
 // XilutionClient -
 type XilutionClient struct {
-	ClientId       *string
-	OrganizationId *string
-	HttpClient     IHttpClient
-	Token          string
+	HttpClient IHttpClient
+	Token      string
 }
 
 // AuthResponse -
@@ -58,43 +56,46 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
-// NewXilutionClient -
-func NewXilutionClient(clientId, organizationId, username, password *string) (*XilutionClient, error) {
+// NewXilutionClientWithToken -
+func NewXilutionClientWithToken(token *string) (*XilutionClient, error) {
 	xc := XilutionClient{
-		HttpClient:     IHttpClientImpl,
-		ClientId:       clientId,
-		OrganizationId: organizationId,
+		HttpClient: IHttpClientImpl,
+		Token:      *token,
 	}
 
-	grantType := "password"
-	scope := "read write"
+	return &xc, nil
+}
 
-	if clientId != nil && organizationId != nil && username != nil && password != nil {
-		data := fmt.Sprintf("grant_type=%s&client_id=%s&password=%s&username=%s&scope=%s", grantType, *clientId, *password, *username, scope)
-
-		// authenticate
-		req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/oauth/token", ZebraBaseUrl, *organizationId), strings.NewReader(data))
-		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-		req.Header.Add("Content-Length", strconv.Itoa(len(data)))
-
-		res, err := xc.HttpClient.Do(req)
-		if err != nil {
-			return nil, err
-		}
-
-		defer res.Body.Close()
-		body, _ := ioutil.ReadAll(res.Body)
-
-		if res.StatusCode != http.StatusOK {
-			return nil, handleErrorResponse(body)
-		}
-
-		// parse response body
-		ar := AuthResponse{}
-		json.Unmarshal(body, &ar)
-
-		xc.Token = ar.Token
+// NewXilutionClient -
+func NewXilutionClient(organizationId, grantType, scope, clientId, clientSecret, username, password *string) (*XilutionClient, error) {
+	xc := XilutionClient{
+		HttpClient: IHttpClientImpl,
 	}
+
+	data := fmt.Sprintf("grant_type=%s&client_id=%s&client_secret=%s&password=%s&username=%s&scope=%s", *grantType, *clientId, *clientSecret, *password, *username, *scope)
+
+	// authenticate
+	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/oauth/token", ZebraBaseUrl, *organizationId), strings.NewReader(data))
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Add("Content-Length", strconv.Itoa(len(data)))
+
+	res, err := xc.HttpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	if res.StatusCode != http.StatusOK {
+		return nil, handleErrorResponse(body)
+	}
+
+	// parse response body
+	ar := AuthResponse{}
+	json.Unmarshal(body, &ar)
+
+	xc.Token = ar.Token
 
 	return &xc, nil
 }

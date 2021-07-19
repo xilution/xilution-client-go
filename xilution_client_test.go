@@ -14,20 +14,36 @@ import (
 )
 
 var (
-	clientId       string
 	organizationId string
+	grantType      string
+	scope          string
+	clientId       string
+	clientSecret   string
 	username       string
 	password       string
+	token          string
 )
 
 func init() {
-	clientId = buildTestId()
 	organizationId = buildTestId()
+	grantType = "password"
+	scope = "read write"
+	clientId = buildTestId()
+	clientSecret = buildTestId()
 	username = gofakeit.Username()
 	password = gofakeit.Password(true, true, true, true, false, 8)
+	token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 }
 
-func Test__NewClient__Happy_Path(t *testing.T) {
+func Test__NewXilutionClientWithToken__Happy_Path(t *testing.T) {
+	resp, err := NewXilutionClientWithToken(&token)
+
+	assert.NotNil(t, resp)
+	assert.Nil(t, err)
+	assert.EqualValues(t, token, resp.Token)
+}
+
+func Test__NewXilutionClient__Happy_Path(t *testing.T) {
 	ctrl := gomock.NewController(t)
 
 	defer ctrl.Finish()
@@ -43,43 +59,11 @@ func Test__NewClient__Happy_Path(t *testing.T) {
 		Body:       r,
 	}, nil)
 
-	resp, err := NewXilutionClient(&clientId, &organizationId, &username, &password)
+	resp, err := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
 	assert.NotNil(t, resp)
 	assert.Nil(t, err)
 	assert.EqualValues(t, token, resp.Token)
-}
-
-func Test__NewClient__When_ClientId_Is_Nil(t *testing.T) {
-	resp, err := NewXilutionClient(nil, &organizationId, &username, &password)
-
-	assert.NotNil(t, resp)
-	assert.Nil(t, err)
-	assert.EqualValues(t, "", resp.Token)
-}
-
-func Test__NewClient__When_OrganizationId_Is_Nil(t *testing.T) {
-	resp, err := NewXilutionClient(&clientId, nil, &username, &password)
-
-	assert.NotNil(t, resp)
-	assert.Nil(t, err)
-	assert.EqualValues(t, "", resp.Token)
-}
-
-func Test__NewClient__When_Username_Is_Nil(t *testing.T) {
-	resp, err := NewXilutionClient(&clientId, &organizationId, nil, &password)
-
-	assert.NotNil(t, resp)
-	assert.Nil(t, err)
-	assert.EqualValues(t, "", resp.Token)
-}
-
-func Test__NewClient__When_Password_Is_Nil(t *testing.T) {
-	resp, err := NewXilutionClient(&clientId, &organizationId, &username, nil)
-
-	assert.NotNil(t, resp)
-	assert.Nil(t, err)
-	assert.EqualValues(t, "", resp.Token)
 }
 
 func Test__NewClient__When_Auth_Request_Returns_Error(t *testing.T) {
@@ -93,7 +77,7 @@ func Test__NewClient__When_Auth_Request_Returns_Error(t *testing.T) {
 	errMsg := gofakeit.Sentence(5)
 	m.EXPECT().Do(gomock.Any()).Return(nil, errors.New(errMsg))
 
-	resp, err := NewXilutionClient(&clientId, &organizationId, &username, &password)
+	resp, err := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -116,7 +100,7 @@ func Test__NewClient__When_Auth_Response_Code_Is_Not_OK(t *testing.T) {
 		Body:       r,
 	}, nil)
 
-	resp, err := NewXilutionClient(&clientId, &organizationId, &username, &password)
+	resp, err := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
 	assert.Nil(t, resp)
 	assert.NotNil(t, err)
@@ -145,7 +129,7 @@ func Test__doGetRequest__Happy_Path(t *testing.T) {
 		Body:       r2,
 	}, nil).After(first)
 
-	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
 	req, _ := http.NewRequest("GET", gofakeit.URL(), nil)
 
@@ -174,7 +158,7 @@ func Test__doGetRequest__When_Auth_Request_Returns_Error(t *testing.T) {
 	errMsg := gofakeit.Sentence(5)
 	m.EXPECT().Do(gomock.Any()).Return(nil, errors.New(errMsg)).After(first)
 
-	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
 	req, _ := http.NewRequest("GET", gofakeit.URL(), nil)
 
@@ -208,7 +192,7 @@ func Test__doGetRequest__When_Response_Code_Is_Not_OK(t *testing.T) {
 		Body:       r2,
 	}, nil).After(first)
 
-	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
 	req, _ := http.NewRequest("GET", gofakeit.URL(), nil)
 
@@ -242,7 +226,7 @@ func Test__doCreateRequest__Happy_Path(t *testing.T) {
 		Header:     map[string][]string{"Location": {location}},
 	}, nil).After(first)
 
-	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
 	req, _ := http.NewRequest("POST", gofakeit.URL(), nil)
 
@@ -271,7 +255,7 @@ func Test__doCreateRequest__When_Auth_Request_Returns_Error(t *testing.T) {
 	errMsg := gofakeit.Sentence(5)
 	m.EXPECT().Do(gomock.Any()).Return(nil, errors.New(errMsg)).After(first)
 
-	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
 	req, _ := http.NewRequest("POST", gofakeit.URL(), nil)
 
@@ -305,7 +289,7 @@ func Test__doCreateRequest__When_Response_Code_Is_Not_Created(t *testing.T) {
 		Body:       r2,
 	}, nil).After(first)
 
-	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
 	req, _ := http.NewRequest("POST", gofakeit.URL(), nil)
 
@@ -337,7 +321,7 @@ func Test__doNoContentRequest__Happy_Path(t *testing.T) {
 		Body:       r2,
 	}, nil).After(first)
 
-	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
 	req, _ := http.NewRequest("PUT", gofakeit.URL(), nil)
 
@@ -364,7 +348,7 @@ func Test__doNoContentRequest__When_Auth_Request_Returns_Error(t *testing.T) {
 	errMsg := gofakeit.Sentence(5)
 	m.EXPECT().Do(gomock.Any()).Return(nil, errors.New(errMsg)).After(first)
 
-	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
 	req, _ := http.NewRequest("PUT", gofakeit.URL(), nil)
 
@@ -397,7 +381,7 @@ func Test__doNoContentRequest__When_Response_Code_Is_Not_Created(t *testing.T) {
 		Body:       r2,
 	}, nil).After(first)
 
-	c, _ := NewXilutionClient(&clientId, &organizationId, &username, &password)
+	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
 	req, _ := http.NewRequest("PUT", gofakeit.URL(), nil)
 
