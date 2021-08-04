@@ -231,23 +231,23 @@ type ContinuousIntegrationStatus struct {
 
 // Pipeline Status -
 type PipelineStatus struct {
-	ContinuousIntegrationStatus ContinuousIntegrationStatus `json:"continuousIntegrationStatus,omitempty"`
-	InfrastructureStatus        string                      `json:"infrastructureStatus,omitempty"`
+	ContinuousIntegrationStatus *ContinuousIntegrationStatus `json:"continuousIntegrationStatus,omitempty"`
+	InfrastructureStatus        string                       `json:"infrastructureStatus,omitempty"`
 }
 
 // VPC Pipelines -
 type VpcPipeline struct {
-	Type            string         `json:"@type"`
-	ID              string         `json:"id,omitempty"`
-	Name            string         `json:"name"`
-	PipelineType    string         `json:"pipelineType"`
-	CloudProviderId string         `json:"cloudProviderId"`
-	OwningUserId    string         `json:"owningUserId"`
-	CreatedAt       string         `json:"createdAt,omitempty"`
-	ModifiedAt      string         `json:"modifiedAt,omitempty"`
-	OrganizationId  string         `json:"organizationId"`
-	Status          PipelineStatus `json:"status,omitempty"`
-	Links           []Link         `json:"links,omitempty"`
+	Type            string          `json:"@type"`
+	ID              string          `json:"id,omitempty"`
+	Name            string          `json:"name"`
+	PipelineType    string          `json:"pipelineType"`
+	CloudProviderId string          `json:"cloudProviderId"`
+	OwningUserId    string          `json:"owningUserId"`
+	CreatedAt       string          `json:"createdAt,omitempty"`
+	ModifiedAt      string          `json:"modifiedAt,omitempty"`
+	OrganizationId  string          `json:"organizationId"`
+	Status          *PipelineStatus `json:"status,omitempty"`
+	Links           []Link          `json:"links,omitempty"`
 }
 
 // Fetch VPC Pipelines Response -
@@ -266,17 +266,17 @@ type FetchVpcPipelinesResponse struct {
 
 // K8s Pipelines -
 type K8sPipeline struct {
-	Type           string         `json:"@type"`
-	ID             string         `json:"id,omitempty"`
-	Name           string         `json:"name"`
-	PipelineType   string         `json:"pipelineType"`
-	VpcPipelineId  string         `json:"gazellePipelineId"`
-	OwningUserId   string         `json:"owningUserId"`
-	CreatedAt      string         `json:"createdAt,omitempty"`
-	ModifiedAt     string         `json:"modifiedAt,omitempty"`
-	OrganizationId string         `json:"organizationId"`
-	Status         PipelineStatus `json:"status,omitempty"`
-	Links          []Link         `json:"links,omitempty"`
+	Type           string          `json:"@type"`
+	ID             string          `json:"id,omitempty"`
+	Name           string          `json:"name"`
+	PipelineType   string          `json:"pipelineType"`
+	VpcPipelineId  string          `json:"gazellePipelineId"`
+	OwningUserId   string          `json:"owningUserId"`
+	CreatedAt      string          `json:"createdAt,omitempty"`
+	ModifiedAt     string          `json:"modifiedAt,omitempty"`
+	OrganizationId string          `json:"organizationId"`
+	Status         *PipelineStatus `json:"status,omitempty"`
+	Links          []Link          `json:"links,omitempty"`
 }
 
 // Fetch K8s Pipelines Response -
@@ -314,7 +314,7 @@ type WordPressPipeline struct {
 	CreatedAt      string           `json:"createdAt,omitempty"`
 	ModifiedAt     string           `json:"modifiedAt,omitempty"`
 	OrganizationId string           `json:"organizationId"`
-	Status         PipelineStatus   `json:"status,omitempty"`
+	Status         *PipelineStatus  `json:"status,omitempty"`
 	Links          []Link           `json:"links,omitempty"`
 }
 
@@ -353,7 +353,7 @@ type StaticContentPipeline struct {
 	CreatedAt       string               `json:"createdAt,omitempty"`
 	ModifiedAt      string               `json:"modifiedAt,omitempty"`
 	OrganizationId  string               `json:"organizationId"`
-	Status          PipelineStatus       `json:"status,omitempty"`
+	Status          *PipelineStatus      `json:"status,omitempty"`
 	Links           []Link               `json:"links,omitempty"`
 }
 
@@ -380,20 +380,20 @@ type ApiStage struct {
 
 // API Pipelines -
 type ApiPipeline struct {
-	Type           string         `json:"@type"`
-	ID             string         `json:"id,omitempty"`
-	Name           string         `json:"name"`
-	PipelineType   string         `json:"pipelineType"`
-	VpcPipelineId  string         `json:"gazellePipelineId"`
-	GitRepoId      string         `json:"gitRepoId"`
-	Branch         string         `json:"branch"`
-	Stages         []ApiStage     `json:"stages"`
-	OwningUserId   string         `json:"owningUserId"`
-	CreatedAt      string         `json:"createdAt,omitempty"`
-	ModifiedAt     string         `json:"modifiedAt,omitempty"`
-	OrganizationId string         `json:"organizationId"`
-	Status         PipelineStatus `json:"status,omitempty"`
-	Links          []Link         `json:"links,omitempty"`
+	Type           string          `json:"@type"`
+	ID             string          `json:"id,omitempty"`
+	Name           string          `json:"name"`
+	PipelineType   string          `json:"pipelineType"`
+	VpcPipelineId  string          `json:"gazellePipelineId"`
+	GitRepoId      string          `json:"gitRepoId"`
+	Branch         string          `json:"branch"`
+	Stages         []ApiStage      `json:"stages"`
+	OwningUserId   string          `json:"owningUserId"`
+	CreatedAt      string          `json:"createdAt,omitempty"`
+	ModifiedAt     string          `json:"modifiedAt,omitempty"`
+	OrganizationId string          `json:"organizationId"`
+	Status         *PipelineStatus `json:"status,omitempty"`
+	Links          []Link          `json:"links,omitempty"`
 }
 
 // Fetch API Pipelines Response -
