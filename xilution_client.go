@@ -10,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/hashicorp/go-retryablehttp"
 )
 
 type ProductUrl string
@@ -38,7 +40,8 @@ var (
 )
 
 func init() {
-	IHttpClientImpl = &http.Client{Timeout: 30 * time.Second}
+	IHttpClientImpl := retryablehttp.NewClient()
+	IHttpClientImpl.HTTPClient = &http.Client{Timeout: 30 * time.Second}
 }
 
 // XilutionClient -
@@ -110,6 +113,8 @@ func (xc *XilutionClient) doGetRequest(req *http.Request) ([]byte, error) {
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", xc.Token))
 	req.Header.Add("Content-Type", "application/json")
 
+	// TODO - retry if receive a 504 (Gateway Timeout) response
+	// https://github.com/hashicorp/go-retryablehttp
 	res, err := xc.HttpClient.Do(req)
 	if err != nil {
 		return nil, err
