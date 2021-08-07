@@ -40,8 +40,9 @@ var (
 )
 
 func init() {
-	IHttpClientImpl := retryablehttp.NewClient()
-	IHttpClientImpl.HTTPClient = &http.Client{Timeout: 30 * time.Second}
+	retryableHttpClient := retryablehttp.NewClient()
+	retryableHttpClient.HTTPClient = &http.Client{Timeout: 30 * time.Second}
+	IHttpClientImpl = retryableHttpClient.HTTPClient
 }
 
 // XilutionClient -
