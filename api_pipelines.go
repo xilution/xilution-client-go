@@ -3,14 +3,15 @@ package xilution
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"strings"
+
+	"github.com/hashicorp/go-retryablehttp"
 )
 
 func (xc *XilutionClient) CreateApiPipeline(organizationId *string, api *ApiPipeline) (*string, error) {
 	rb, _ := json.Marshal(api)
 
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipelines", FoxBaseUrl, *organizationId), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipelines", FoxBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -21,7 +22,7 @@ func (xc *XilutionClient) CreateApiPipeline(organizationId *string, api *ApiPipe
 }
 
 func (xc *XilutionClient) GetApiPipeline(organizationId *string, apiId *string) (*ApiPipeline, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines/%s", FoxBaseUrl, *organizationId, *apiId), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines/%s", FoxBaseUrl, *organizationId, *apiId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -35,7 +36,7 @@ func (xc *XilutionClient) GetApiPipeline(organizationId *string, apiId *string) 
 }
 
 func (xc *XilutionClient) GetApiPipelines(organizationId *string, pageSize, pageNumber *int) (*FetchApiPipelinesResponse, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines?pageSize=%d&pageNumber=%d", FoxBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines?pageSize=%d&pageNumber=%d", FoxBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -51,7 +52,7 @@ func (xc *XilutionClient) GetApiPipelines(organizationId *string, pageSize, page
 func (xc *XilutionClient) UpdateApiPipeline(organizationId *string, api *ApiPipeline) error {
 	rb, _ := json.Marshal(api)
 
-	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/pipelines/%s", FoxBaseUrl, *organizationId, api.ID), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/pipelines/%s", FoxBaseUrl, *organizationId, api.ID), strings.NewReader(string(rb)))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -62,7 +63,7 @@ func (xc *XilutionClient) UpdateApiPipeline(organizationId *string, api *ApiPipe
 }
 
 func (xc *XilutionClient) DeleteApiPipeline(organizationId *string, apiId *string) error {
-	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/pipelines/%s", FoxBaseUrl, *organizationId, *apiId), strings.NewReader(string("")))
+	req, _ := retryablehttp.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/pipelines/%s", FoxBaseUrl, *organizationId, *apiId), strings.NewReader(string("")))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -75,7 +76,7 @@ func (xc *XilutionClient) DeleteApiPipeline(organizationId *string, apiId *strin
 func (xc *XilutionClient) CreateApiPipelineEvent(organizationId *string, pipelineEvent *PipelineEvent) (*string, error) {
 	rb, _ := json.Marshal(pipelineEvent)
 
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipeline-events", GazelleBaseUrl, *organizationId), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipeline-events", GazelleBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -86,7 +87,7 @@ func (xc *XilutionClient) CreateApiPipelineEvent(organizationId *string, pipelin
 }
 
 func (xc *XilutionClient) GetApiPipelineEvent(organizationId *string, pipelineEventId *string) (*PipelineEvent, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events/%s", GazelleBaseUrl, *organizationId, *pipelineEventId), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events/%s", GazelleBaseUrl, *organizationId, *pipelineEventId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -100,7 +101,7 @@ func (xc *XilutionClient) GetApiPipelineEvent(organizationId *string, pipelineEv
 }
 
 func (xc *XilutionClient) GetApiPipelineEvents(organizationId *string, pageSize, pageNumber *int) (*FetchPipelineEventsResponse, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events?pageSize=%d&pageNumber=%d", GazelleBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events?pageSize=%d&pageNumber=%d", GazelleBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {

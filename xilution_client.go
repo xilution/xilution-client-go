@@ -32,7 +32,7 @@ const (
 
 // HTTPClient interface
 type IHttpClient interface {
-	Do(req *http.Request) (*http.Response, error)
+	Do(req *retryablehttp.Request) (*http.Response, error)
 }
 
 var (
@@ -40,9 +40,9 @@ var (
 )
 
 func init() {
-	retryableHttpClient := retryablehttp.NewClient()
-	retryableHttpClient.HTTPClient = &http.Client{Timeout: 30 * time.Second}
-	IHttpClientImpl = retryableHttpClient.HTTPClient
+	retryClient := retryablehttp.NewClient()
+	retryClient.HTTPClient = &http.Client{Timeout: 30 * time.Second}
+	IHttpClientImpl = retryClient
 }
 
 // XilutionClient -
@@ -79,7 +79,7 @@ func NewXilutionClient(organizationId, grantType, scope, clientId, clientSecret,
 	data := fmt.Sprintf("grant_type=%s&client_id=%s&client_secret=%s&password=%s&username=%s&scope=%s", *grantType, *clientId, *clientSecret, *password, *username, *scope)
 
 	// authenticate
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/oauth/token", ZebraBaseUrl, *organizationId), strings.NewReader(data))
+	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/oauth/token", ZebraBaseUrl, *organizationId), strings.NewReader(data))
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Content-Length", strconv.Itoa(len(data)))
 
@@ -110,7 +110,7 @@ func handleErrorResponse(body []byte) error {
 	return fmt.Errorf(er.Message)
 }
 
-func (xc *XilutionClient) doGetRequest(req *http.Request) ([]byte, error) {
+func (xc *XilutionClient) doGetRequest(req *retryablehttp.Request) ([]byte, error) {
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", xc.Token))
 	req.Header.Add("Content-Type", "application/json")
 
@@ -131,7 +131,7 @@ func (xc *XilutionClient) doGetRequest(req *http.Request) ([]byte, error) {
 	return body, err
 }
 
-func (xc *XilutionClient) doCreateRequest(req *http.Request) (*string, error) {
+func (xc *XilutionClient) doCreateRequest(req *retryablehttp.Request) (*string, error) {
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", xc.Token))
 	req.Header.Add("Content-Type", "application/json")
 
@@ -151,7 +151,7 @@ func (xc *XilutionClient) doCreateRequest(req *http.Request) (*string, error) {
 	return &location, err
 }
 
-func (xc *XilutionClient) doNoContentRequest(req *http.Request) error {
+func (xc *XilutionClient) doNoContentRequest(req *retryablehttp.Request) error {
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", xc.Token))
 	req.Header.Add("Content-Type", "application/json")
 

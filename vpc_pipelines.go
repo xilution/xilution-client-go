@@ -3,14 +3,15 @@ package xilution
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"strings"
+
+	"github.com/hashicorp/go-retryablehttp"
 )
 
 func (xc *XilutionClient) CreateVpcPipeline(organizationId *string, pipeline *VpcPipeline) (*string, error) {
 	rb, _ := json.Marshal(pipeline)
 
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipelines", GazelleBaseUrl, *organizationId), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipelines", GazelleBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -21,7 +22,7 @@ func (xc *XilutionClient) CreateVpcPipeline(organizationId *string, pipeline *Vp
 }
 
 func (xc *XilutionClient) GetVpcPipeline(organizationId *string, pipeline *string) (*VpcPipeline, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines/%s", GazelleBaseUrl, *organizationId, *pipeline), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines/%s", GazelleBaseUrl, *organizationId, *pipeline), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -35,7 +36,7 @@ func (xc *XilutionClient) GetVpcPipeline(organizationId *string, pipeline *strin
 }
 
 func (xc *XilutionClient) GetVpcPipelines(organizationId *string, pageSize, pageNumber *int) (*FetchVpcPipelinesResponse, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines?pageSize=%d&pageNumber=%d", GazelleBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines?pageSize=%d&pageNumber=%d", GazelleBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -51,7 +52,7 @@ func (xc *XilutionClient) GetVpcPipelines(organizationId *string, pageSize, page
 func (xc *XilutionClient) UpdateVpcPipeline(organizationId *string, vpcPipeline *VpcPipeline) error {
 	rb, _ := json.Marshal(vpcPipeline)
 
-	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/pipelines/%s", GazelleBaseUrl, *organizationId, vpcPipeline.ID), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/pipelines/%s", GazelleBaseUrl, *organizationId, vpcPipeline.ID), strings.NewReader(string(rb)))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -62,7 +63,7 @@ func (xc *XilutionClient) UpdateVpcPipeline(organizationId *string, vpcPipeline 
 }
 
 func (xc *XilutionClient) DeleteVpcPipeline(organizationId *string, pipeline *string) error {
-	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/pipelines/%s", GazelleBaseUrl, *organizationId, *pipeline), strings.NewReader(string("")))
+	req, _ := retryablehttp.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/pipelines/%s", GazelleBaseUrl, *organizationId, *pipeline), strings.NewReader(string("")))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -75,7 +76,7 @@ func (xc *XilutionClient) DeleteVpcPipeline(organizationId *string, pipeline *st
 func (xc *XilutionClient) CreateVpcPipelineEvent(organizationId *string, pipelineEvent *PipelineEvent) (*string, error) {
 	rb, _ := json.Marshal(pipelineEvent)
 
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipeline-events", GazelleBaseUrl, *organizationId), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipeline-events", GazelleBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -86,7 +87,7 @@ func (xc *XilutionClient) CreateVpcPipelineEvent(organizationId *string, pipelin
 }
 
 func (xc *XilutionClient) GetVpcPipelineEvent(organizationId *string, pipelineEventId *string) (*PipelineEvent, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events/%s", GazelleBaseUrl, *organizationId, *pipelineEventId), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events/%s", GazelleBaseUrl, *organizationId, *pipelineEventId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -100,7 +101,7 @@ func (xc *XilutionClient) GetVpcPipelineEvent(organizationId *string, pipelineEv
 }
 
 func (xc *XilutionClient) GetVpcPipelineEvents(organizationId *string, pageSize, pageNumber *int) (*FetchPipelineEventsResponse, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events?pageSize=%d&pageNumber=%d", GazelleBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events?pageSize=%d&pageNumber=%d", GazelleBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {

@@ -10,6 +10,7 @@ import (
 
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/golang/mock/gomock"
+	"github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -131,7 +132,7 @@ func Test__doGetRequest__Happy_Path(t *testing.T) {
 
 	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
-	req, _ := http.NewRequest("GET", gofakeit.URL(), nil)
+	req, _ := retryablehttp.NewRequest("GET", gofakeit.URL(), nil)
 
 	resp, err := c.doGetRequest(req)
 
@@ -160,7 +161,7 @@ func Test__doGetRequest__When_Auth_Request_Returns_Error(t *testing.T) {
 
 	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
-	req, _ := http.NewRequest("GET", gofakeit.URL(), nil)
+	req, _ := retryablehttp.NewRequest("GET", gofakeit.URL(), nil)
 
 	resp, err := c.doGetRequest(req)
 
@@ -194,7 +195,7 @@ func Test__doGetRequest__When_Response_Code_Is_Not_OK(t *testing.T) {
 
 	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
-	req, _ := http.NewRequest("GET", gofakeit.URL(), nil)
+	req, _ := retryablehttp.NewRequest("GET", gofakeit.URL(), nil)
 
 	resp, err := c.doGetRequest(req)
 
@@ -228,7 +229,7 @@ func Test__doCreateRequest__Happy_Path(t *testing.T) {
 
 	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
-	req, _ := http.NewRequest("POST", gofakeit.URL(), nil)
+	req, _ := retryablehttp.NewRequest("POST", gofakeit.URL(), nil)
 
 	resp, err := c.doCreateRequest(req)
 
@@ -257,7 +258,7 @@ func Test__doCreateRequest__When_Auth_Request_Returns_Error(t *testing.T) {
 
 	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
-	req, _ := http.NewRequest("POST", gofakeit.URL(), nil)
+	req, _ := retryablehttp.NewRequest("POST", gofakeit.URL(), nil)
 
 	resp, err := c.doCreateRequest(req)
 
@@ -291,7 +292,7 @@ func Test__doCreateRequest__When_Response_Code_Is_Not_Created(t *testing.T) {
 
 	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
-	req, _ := http.NewRequest("POST", gofakeit.URL(), nil)
+	req, _ := retryablehttp.NewRequest("POST", gofakeit.URL(), nil)
 
 	resp, err := c.doCreateRequest(req)
 
@@ -323,7 +324,7 @@ func Test__doNoContentRequest__Happy_Path(t *testing.T) {
 
 	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
-	req, _ := http.NewRequest("PUT", gofakeit.URL(), nil)
+	req, _ := retryablehttp.NewRequest("PUT", gofakeit.URL(), nil)
 
 	err := c.doNoContentRequest(req)
 
@@ -350,7 +351,7 @@ func Test__doNoContentRequest__When_Auth_Request_Returns_Error(t *testing.T) {
 
 	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
-	req, _ := http.NewRequest("PUT", gofakeit.URL(), nil)
+	req, _ := retryablehttp.NewRequest("PUT", gofakeit.URL(), nil)
 
 	err := c.doNoContentRequest(req)
 
@@ -383,7 +384,7 @@ func Test__doNoContentRequest__When_Response_Code_Is_Not_Created(t *testing.T) {
 
 	c, _ := NewXilutionClient(&organizationId, &grantType, &scope, &clientId, &clientSecret, &username, &password)
 
-	req, _ := http.NewRequest("PUT", gofakeit.URL(), nil)
+	req, _ := retryablehttp.NewRequest("PUT", gofakeit.URL(), nil)
 
 	err := c.doNoContentRequest(req)
 

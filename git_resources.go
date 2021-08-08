@@ -3,14 +3,15 @@ package xilution
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"strings"
+
+	"github.com/hashicorp/go-retryablehttp"
 )
 
 func (xc *XilutionClient) CreateGitAccount(organizationId *string, gitAccount *GitAccount) (*string, error) {
 	rb, _ := json.Marshal(gitAccount)
 
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-accounts", SwanBaseUrl, *organizationId), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-accounts", SwanBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -21,7 +22,7 @@ func (xc *XilutionClient) CreateGitAccount(organizationId *string, gitAccount *G
 }
 
 func (xc *XilutionClient) GetGitAccount(organizationId *string, gitAccountId *string) (*GitAccount, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-accounts/%s", SwanBaseUrl, *organizationId, *gitAccountId), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-accounts/%s", SwanBaseUrl, *organizationId, *gitAccountId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -35,7 +36,7 @@ func (xc *XilutionClient) GetGitAccount(organizationId *string, gitAccountId *st
 }
 
 func (xc *XilutionClient) GetGitAccounts(organizationId *string, pageSize, pageNumber *int) (*FetchGitAccountsResponse, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-accounts?pageSize=%d&pageNumber=%d", SwanBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-accounts?pageSize=%d&pageNumber=%d", SwanBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -51,7 +52,7 @@ func (xc *XilutionClient) GetGitAccounts(organizationId *string, pageSize, pageN
 func (xc *XilutionClient) UpdateGitAccount(organizationId *string, gitAccount *GitAccount) error {
 	rb, _ := json.Marshal(gitAccount)
 
-	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/git-accounts/%s", SwanBaseUrl, *organizationId, gitAccount.ID), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/git-accounts/%s", SwanBaseUrl, *organizationId, gitAccount.ID), strings.NewReader(string(rb)))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -62,7 +63,7 @@ func (xc *XilutionClient) UpdateGitAccount(organizationId *string, gitAccount *G
 }
 
 func (xc *XilutionClient) DeleteGitAccount(organizationId *string, gitAccountId *string) error {
-	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/git-accounts/%s", SwanBaseUrl, *organizationId, *gitAccountId), strings.NewReader(string("")))
+	req, _ := retryablehttp.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/git-accounts/%s", SwanBaseUrl, *organizationId, *gitAccountId), strings.NewReader(string("")))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -75,7 +76,7 @@ func (xc *XilutionClient) DeleteGitAccount(organizationId *string, gitAccountId 
 func (xc *XilutionClient) CreateGitRepo(organizationId *string, gitRepo *GitRepo) (*string, error) {
 	rb, _ := json.Marshal(gitRepo)
 
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-repos", SwanBaseUrl, *organizationId), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-repos", SwanBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -86,7 +87,7 @@ func (xc *XilutionClient) CreateGitRepo(organizationId *string, gitRepo *GitRepo
 }
 
 func (xc *XilutionClient) GetGitRepo(organizationId, gitRepoId *string) (*GitRepo, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-repos/%s", SwanBaseUrl, *organizationId, *gitRepoId), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-repos/%s", SwanBaseUrl, *organizationId, *gitRepoId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -100,7 +101,7 @@ func (xc *XilutionClient) GetGitRepo(organizationId, gitRepoId *string) (*GitRep
 }
 
 func (xc *XilutionClient) GetGitRepos(organizationId *string, pageSize, pageNumber *int) (*FetchGitReposResponse, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-repos?pageSize=%d&pageNumber=%d", SwanBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-repos?pageSize=%d&pageNumber=%d", SwanBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -116,7 +117,7 @@ func (xc *XilutionClient) GetGitRepos(organizationId *string, pageSize, pageNumb
 func (xc *XilutionClient) UpdateGitRepo(organizationId *string, gitRepo *GitRepo) error {
 	rb, _ := json.Marshal(gitRepo)
 
-	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/git-repos/%s", SwanBaseUrl, *organizationId, gitRepo.ID), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/git-repos/%s", SwanBaseUrl, *organizationId, gitRepo.ID), strings.NewReader(string(rb)))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -127,7 +128,7 @@ func (xc *XilutionClient) UpdateGitRepo(organizationId *string, gitRepo *GitRepo
 }
 
 func (xc *XilutionClient) DeleteGitRepo(organizationId, gitRepoId *string) error {
-	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/git-repos/%s", SwanBaseUrl, *organizationId, *gitRepoId), strings.NewReader(string("")))
+	req, _ := retryablehttp.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/git-repos/%s", SwanBaseUrl, *organizationId, *gitRepoId), strings.NewReader(string("")))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -140,7 +141,7 @@ func (xc *XilutionClient) DeleteGitRepo(organizationId, gitRepoId *string) error
 func (xc *XilutionClient) CreateGitRepoEvent(organizationId *string, gitRepoEvent *GitRepoEvent) (*string, error) {
 	rb, _ := json.Marshal(gitRepoEvent)
 
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-repo-events", SwanBaseUrl, *organizationId), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/git-repo-events", SwanBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -151,7 +152,7 @@ func (xc *XilutionClient) CreateGitRepoEvent(organizationId *string, gitRepoEven
 }
 
 func (xc *XilutionClient) GetGitRepoEvent(organizationId, eventId *string) (*GitRepoEvent, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-repo-events/%s", SwanBaseUrl, *organizationId, *eventId), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-repo-events/%s", SwanBaseUrl, *organizationId, *eventId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -165,7 +166,7 @@ func (xc *XilutionClient) GetGitRepoEvent(organizationId, eventId *string) (*Git
 }
 
 func (xc *XilutionClient) GetGitRepoEvents(organizationId *string, pageSize, pageNumber *int) (*FetchGitRepoEventsResponse, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-repo-events?pageSize=%d&pageNumber=%d", SwanBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/git-repo-events?pageSize=%d&pageNumber=%d", SwanBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {

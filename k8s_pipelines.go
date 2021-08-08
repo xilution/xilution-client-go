@@ -3,14 +3,15 @@ package xilution
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"strings"
+
+	"github.com/hashicorp/go-retryablehttp"
 )
 
 func (xc *XilutionClient) CreateK8sPipeline(organizationId *string, k8sPipeline *K8sPipeline) (*string, error) {
 	rb, _ := json.Marshal(k8sPipeline)
 
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipelines", GiraffeBaseUrl, *organizationId), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipelines", GiraffeBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -21,7 +22,7 @@ func (xc *XilutionClient) CreateK8sPipeline(organizationId *string, k8sPipeline 
 }
 
 func (xc *XilutionClient) GetK8sPipeline(organizationId *string, k8sPipelineId *string) (*K8sPipeline, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines/%s", GiraffeBaseUrl, *organizationId, *k8sPipelineId), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines/%s", GiraffeBaseUrl, *organizationId, *k8sPipelineId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -35,7 +36,7 @@ func (xc *XilutionClient) GetK8sPipeline(organizationId *string, k8sPipelineId *
 }
 
 func (xc *XilutionClient) GetK8sPipelines(organizationId *string, pageSize, pageNumber *int) (*FetchK8sPipelinesResponse, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines?pageSize=%d&pageNumber=%d", GiraffeBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipelines?pageSize=%d&pageNumber=%d", GiraffeBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -51,7 +52,7 @@ func (xc *XilutionClient) GetK8sPipelines(organizationId *string, pageSize, page
 func (xc *XilutionClient) UpdateK8sPipeline(organizationId *string, k8sPipeline *K8sPipeline) error {
 	rb, _ := json.Marshal(k8sPipeline)
 
-	req, _ := http.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/pipelines/%s", GiraffeBaseUrl, *organizationId, k8sPipeline.ID), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("PUT", fmt.Sprintf("%s/organizations/%s/pipelines/%s", GiraffeBaseUrl, *organizationId, k8sPipeline.ID), strings.NewReader(string(rb)))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -62,7 +63,7 @@ func (xc *XilutionClient) UpdateK8sPipeline(organizationId *string, k8sPipeline 
 }
 
 func (xc *XilutionClient) DeleteK8sPipeline(organizationId *string, k8sPipelineId *string) error {
-	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/pipelines/%s", GiraffeBaseUrl, *organizationId, *k8sPipelineId), strings.NewReader(string("")))
+	req, _ := retryablehttp.NewRequest("DELETE", fmt.Sprintf("%s/organizations/%s/pipelines/%s", GiraffeBaseUrl, *organizationId, *k8sPipelineId), strings.NewReader(string("")))
 
 	err := xc.doNoContentRequest(req)
 	if err != nil {
@@ -75,7 +76,7 @@ func (xc *XilutionClient) DeleteK8sPipeline(organizationId *string, k8sPipelineI
 func (xc *XilutionClient) CreateK8sPipelineEvent(organizationId *string, pipelineEvent *PipelineEvent) (*string, error) {
 	rb, _ := json.Marshal(pipelineEvent)
 
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipeline-events", GazelleBaseUrl, *organizationId), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipeline-events", GazelleBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -86,7 +87,7 @@ func (xc *XilutionClient) CreateK8sPipelineEvent(organizationId *string, pipelin
 }
 
 func (xc *XilutionClient) GetK8sPipelineEvent(organizationId *string, pipelineEventId *string) (*PipelineEvent, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events/%s", GazelleBaseUrl, *organizationId, *pipelineEventId), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events/%s", GazelleBaseUrl, *organizationId, *pipelineEventId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -100,7 +101,7 @@ func (xc *XilutionClient) GetK8sPipelineEvent(organizationId *string, pipelineEv
 }
 
 func (xc *XilutionClient) GetK8sPipelineEvents(organizationId *string, pageSize, pageNumber *int) (*FetchPipelineEventsResponse, error) {
-	req, _ := http.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events?pageSize=%d&pageNumber=%d", GazelleBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events?pageSize=%d&pageNumber=%d", GazelleBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
