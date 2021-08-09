@@ -76,7 +76,7 @@ func (xc *XilutionClient) DeleteApiPipeline(organizationId *string, apiId *strin
 func (xc *XilutionClient) CreateApiPipelineEvent(organizationId *string, pipelineEvent *PipelineEvent) (*string, error) {
 	rb, _ := json.Marshal(pipelineEvent)
 
-	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipeline-events", GazelleBaseUrl, *organizationId), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipeline-events", FoxBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -87,7 +87,7 @@ func (xc *XilutionClient) CreateApiPipelineEvent(organizationId *string, pipelin
 }
 
 func (xc *XilutionClient) GetApiPipelineEvent(organizationId *string, pipelineEventId *string) (*PipelineEvent, error) {
-	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events/%s", GazelleBaseUrl, *organizationId, *pipelineEventId), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events/%s", FoxBaseUrl, *organizationId, *pipelineEventId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -101,7 +101,7 @@ func (xc *XilutionClient) GetApiPipelineEvent(organizationId *string, pipelineEv
 }
 
 func (xc *XilutionClient) GetApiPipelineEvents(organizationId *string, pageSize, pageNumber *int) (*FetchPipelineEventsResponse, error) {
-	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events?pageSize=%d&pageNumber=%d", GazelleBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events?pageSize=%d&pageNumber=%d", FoxBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {

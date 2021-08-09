@@ -76,7 +76,7 @@ func (xc *XilutionClient) DeleteWordPressPipeline(organizationId *string, wordPr
 func (xc *XilutionClient) CreateWordPressPipelineEvent(organizationId *string, pipelineEvent *PipelineEvent) (*string, error) {
 	rb, _ := json.Marshal(pipelineEvent)
 
-	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipeline-events", GazelleBaseUrl, *organizationId), strings.NewReader(string(rb)))
+	req, _ := retryablehttp.NewRequest("POST", fmt.Sprintf("%s/organizations/%s/pipeline-events", PenguinBaseUrl, *organizationId), strings.NewReader(string(rb)))
 
 	location, err := xc.doCreateRequest(req)
 	if err != nil {
@@ -87,7 +87,7 @@ func (xc *XilutionClient) CreateWordPressPipelineEvent(organizationId *string, p
 }
 
 func (xc *XilutionClient) GetWordPressPipelineEvent(organizationId *string, pipelineEventId *string) (*PipelineEvent, error) {
-	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events/%s", GazelleBaseUrl, *organizationId, *pipelineEventId), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events/%s", PenguinBaseUrl, *organizationId, *pipelineEventId), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
@@ -101,7 +101,7 @@ func (xc *XilutionClient) GetWordPressPipelineEvent(organizationId *string, pipe
 }
 
 func (xc *XilutionClient) GetWordPressPipelineEvents(organizationId *string, pageSize, pageNumber *int) (*FetchPipelineEventsResponse, error) {
-	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events?pageSize=%d&pageNumber=%d", GazelleBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
+	req, _ := retryablehttp.NewRequest("GET", fmt.Sprintf("%s/organizations/%s/pipeline-events?pageSize=%d&pageNumber=%d", PenguinBaseUrl, *organizationId, *pageSize, *pageNumber), nil)
 
 	body, err := xc.doGetRequest(req)
 	if err != nil {
