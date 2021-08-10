@@ -437,3 +437,106 @@ type FetchPipelineEventsResponse struct {
 	ID               Link   `json:"link"`
 	Links            []Link `json:"links,omitempty"`
 }
+
+// Translation -
+type Translation struct {
+	Default string `json:"default"`
+	En      string `json:"en,omitempty"`
+}
+
+// DecomposedParameterDefinition -
+type DecomposedParameterDefinition struct {
+	Name            string `json:"name"`
+	ValueExpression string `json:"valueExpression"`
+}
+
+// DecompositionDefinition -
+type DecompositionDefinition struct {
+	Uri                            string                          `json:"uri"`
+	DecomposedParameterDefinitions []DecomposedParameterDefinition `json:"decomposedParameterDefinitions"`
+}
+
+// Validation -
+type Validation struct {
+	FunctionName string      `json:"functionName"`
+	Parameters   interface{} `json:"parameters"`
+}
+
+// Option -
+type Option struct {
+	Name     Translation `json:"name"`
+	Value    interface{} `json:"value,omitempty"`
+	Disabled bool        `json:"disabled,omitempty"`
+}
+
+// OptionsRef -
+type OptionsRef struct {
+	Id              string `json:"id"`
+	NameExpression  string `json:"nameExpression"`
+	ValueExpression string `json:"valueExpression"`
+}
+
+// ParameterDefinition -
+type ParameterDefinition struct {
+	Name                    string                  `json:"name"`
+	Label                   Translation             `json:"label"`
+	HelpText                Translation             `json:"helpText,omitempty"`
+	Type                    string                  `json:"type,omitempty"`
+	Validation              Validation              `json:"validation,omitempty"`
+	AutoComplete            string                  `json:"autoComplete,omitempty"`
+	ReadOnly                bool                    `json:"readOnly"`
+	Placeholder             Translation             `json:"placeholder,omitempty"`
+	InitialValue            string                  `json:"initialValue,omitempty"`
+	Options                 []Option                `json:"options,omitempty"`
+	OptionsRef              OptionsRef              `json:"optionsRef,omitempty"`
+	DecompositionDefinition DecompositionDefinition `json:"decompositionDefinition"`
+}
+
+// ParameterDefinition -
+type Reference struct {
+	FilterExpression string `json:"filterExpression"`
+	Id               string `json:"id"`
+	Required         bool   `json:"required"`
+	Uri              string `json:"uri"`
+}
+
+// Terraform -
+type Terraform struct {
+	SubPath    string `json:"subPath"`
+	SwanRepoId string `json:"swanRepoId"`
+}
+
+// Pipeline Prototype -
+type PipelinePrototype struct {
+	Type string `json:"@type"`
+	ID   string `json:"id,omitempty"`
+	Name string `json:"name"`
+
+	Active               bool                  `json:"active"`
+	Description          string                `json:"description"`
+	ParameterDefinitions []ParameterDefinition `json:"parameterDefinitions"`
+	References           []Reference           `json:"references"`
+	Terraform            Terraform             `json:"terraform"`
+	Version              string                `json:"version"`
+
+	OwningUserId   string          `json:"owningUserId"`
+	CreatedAt      string          `json:"createdAt,omitempty"`
+	ModifiedAt     string          `json:"modifiedAt,omitempty"`
+	OrganizationId string          `json:"organizationId"`
+	Status         *PipelineStatus `json:"status,omitempty"`
+	Links          []Link          `json:"links,omitempty"`
+}
+
+// Fetch Pipeline Prototype Response -
+type FetchPipelinePrototypesResponse struct {
+	Content          []PipelinePrototype
+	PageSize         int    `json:"pageSize,omitempty"`
+	PageNumber       int    `json:"pageNumber,omitempty"`
+	TotalPages       int    `json:"totalPages"`
+	NumberOfElements int    `json:"numberOfElements,omitempty"`
+	TotalElements    int    `json:"totalElements"`
+	FirstPage        bool   `json:"firstPage"`
+	LastPage         bool   `json:"lastPage"`
+	ID               Link   `json:"link"`
+	Links            []Link `json:"links,omitempty"`
+}

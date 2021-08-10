@@ -246,3 +246,14 @@ func buildTestPipelineEvent() PipelineEvent {
 		OrganizationId: buildTestId(),
 	}
 }
+
+func buildTestPipelinePrototype() PipelinePrototype {
+	return PipelinePrototype{
+		Type:           "pipeline-prototype",
+		ID:             buildTestId(),
+		OwningUserId:   buildTestId(),
+		CreatedAt:      gofakeit.Date().Format(time.RFC3339),
+		ModifiedAt:     gofakeit.Date().Format(time.RFC3339),
+		OrganizationId: buildTestId(),
+	}
+}

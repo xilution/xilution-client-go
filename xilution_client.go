@@ -28,6 +28,7 @@ const (
 	PenguinBaseUrl  ProductUrl = "https://penguin.cms.api.xilution.com"
 	CoyoteBaseUrl   ProductUrl = "https://coyote.content-delivery.api.xilution.com"
 	FoxBaseUrl      ProductUrl = "https://fox.integration.api.xilution.com"
+	BisonBaseUrl    ProductUrl = "https://bison.basics.api.xilution.com"
 )
 
 // HTTPClient interface
