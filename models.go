@@ -484,7 +484,7 @@ type ParameterDefinition struct {
 	Type                    string                   `json:"type,omitempty"`
 	Validation              *Validation              `json:"validation,omitempty"`
 	AutoComplete            string                   `json:"autoComplete,omitempty"`
-	ReadOnly                bool                     `json:"readOnly"`
+	ReadOnly                bool                     `json:"readOnly,omitempty"`
 	Placeholder             *Translation             `json:"placeholder,omitempty"`
 	InitialValue            string                   `json:"initialValue,omitempty"`
 	Options                 []Option                 `json:"options,omitempty"`
