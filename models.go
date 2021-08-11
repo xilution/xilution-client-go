@@ -459,7 +459,7 @@ type DecompositionDefinition struct {
 // Validation -
 type Validation struct {
 	FunctionName string      `json:"functionName"`
-	Parameters   interface{} `json:"parameters"`
+	Parameters   interface{} `json:"parameters,omitempty"`
 }
 
 // Option -
