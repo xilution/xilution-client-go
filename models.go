@@ -478,18 +478,18 @@ type OptionsRef struct {
 
 // ParameterDefinition -
 type ParameterDefinition struct {
-	Name                    string                  `json:"name"`
-	Label                   Translation             `json:"label"`
-	HelpText                Translation             `json:"helpText,omitempty"`
-	Type                    string                  `json:"type,omitempty"`
-	Validation              Validation              `json:"validation,omitempty"`
-	AutoComplete            string                  `json:"autoComplete,omitempty"`
-	ReadOnly                bool                    `json:"readOnly"`
-	Placeholder             Translation             `json:"placeholder,omitempty"`
-	InitialValue            string                  `json:"initialValue,omitempty"`
-	Options                 []Option                `json:"options,omitempty"`
-	OptionsRef              OptionsRef              `json:"optionsRef,omitempty"`
-	DecompositionDefinition DecompositionDefinition `json:"decompositionDefinition"`
+	Name                    string                   `json:"name"`
+	Label                   Translation              `json:"label"`
+	HelpText                *Translation             `json:"helpText,omitempty"`
+	Type                    string                   `json:"type,omitempty"`
+	Validation              *Validation              `json:"validation,omitempty"`
+	AutoComplete            string                   `json:"autoComplete,omitempty"`
+	ReadOnly                bool                     `json:"readOnly"`
+	Placeholder             *Translation             `json:"placeholder,omitempty"`
+	InitialValue            string                   `json:"initialValue,omitempty"`
+	Options                 []Option                 `json:"options,omitempty"`
+	OptionsRef              *OptionsRef              `json:"optionsRef,omitempty"`
+	DecompositionDefinition *DecompositionDefinition `json:"decompositionDefinition"`
 }
 
 // ParameterDefinition -
@@ -508,23 +508,21 @@ type Terraform struct {
 
 // Pipeline Prototype -
 type PipelinePrototype struct {
-	Type string `json:"@type"`
-	ID   string `json:"id,omitempty"`
-	Name string `json:"name"`
-
+	Type                 string                `json:"@type"`
+	ID                   string                `json:"id,omitempty"`
+	Name                 string                `json:"name"`
 	Active               bool                  `json:"active"`
 	Description          string                `json:"description"`
 	ParameterDefinitions []ParameterDefinition `json:"parameterDefinitions"`
 	References           []Reference           `json:"references"`
 	Terraform            Terraform             `json:"terraform"`
 	Version              string                `json:"version"`
-
-	OwningUserId   string          `json:"owningUserId"`
-	CreatedAt      string          `json:"createdAt,omitempty"`
-	ModifiedAt     string          `json:"modifiedAt,omitempty"`
-	OrganizationId string          `json:"organizationId"`
-	Status         *PipelineStatus `json:"status,omitempty"`
-	Links          []Link          `json:"links,omitempty"`
+	OwningUserId         string                `json:"owningUserId"`
+	CreatedAt            string                `json:"createdAt,omitempty"`
+	ModifiedAt           string                `json:"modifiedAt,omitempty"`
+	OrganizationId       string                `json:"organizationId"`
+	Status               *PipelineStatus       `json:"status,omitempty"`
+	Links                []Link                `json:"links,omitempty"`
 }
 
 // Fetch Pipeline Prototype Response -
