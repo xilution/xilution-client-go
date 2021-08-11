@@ -489,7 +489,7 @@ type ParameterDefinition struct {
 	InitialValue            string                   `json:"initialValue,omitempty"`
 	Options                 []Option                 `json:"options,omitempty"`
 	OptionsRef              *OptionsRef              `json:"optionsRef,omitempty"`
-	DecompositionDefinition *DecompositionDefinition `json:"decompositionDefinition"`
+	DecompositionDefinition *DecompositionDefinition `json:"decompositionDefinition,omitempty"`
 }
 
 // ParameterDefinition -
